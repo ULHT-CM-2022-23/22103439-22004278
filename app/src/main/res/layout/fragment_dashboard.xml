@@ -1,0 +1,48 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Título do Dashboard -->
+        <TextView
+            android:id="@+id/dashboard_titulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_dashboard"
+            android:textSize="24sp"
+            android:gravity="center"
+            android:padding="16dp"/>
+
+        <!-- Lista de Filmes Vistos -->
+        <TextView
+            android:id="@+id/filmes_vistos_titulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/dash_seen_movies"
+            android:textSize="18sp"
+            android:padding="8dp"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/filmes_vistos_lista"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"/>
+
+        <!-- Lista de Top Filmes -->
+        <TextView
+            android:id="@+id/top_filmes_titulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/dash_top_movies"
+            android:textSize="18sp"
+            android:padding="8dp"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/top_filmes_lista"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"/>
+
+    </LinearLayout>
+
+</ScrollView>

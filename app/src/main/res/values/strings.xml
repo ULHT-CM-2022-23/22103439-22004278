@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Cinecartaz</string>
+    <string name="registo">REGISTO</string>
+    <string name="lista">LISTA</string>
+    <string name="dashboard">DASHBOARD</string>
+    <string name="drawer_open">Aberto</string>
+    <string name="drawer_close">Fechado</string>
+    <string name="button_gravar">Gravar Registo</string>
+    <string name="textfield_filme">Nome do filme</string>
+    <string name="textfield_cinema">Nome do cinema</string>
+    <string name="title_registar">Registar nova avaliação</string>
+    <string name="field_avaliacao">Avaliação (1 a 10)</string>
+    <string name="field_data">Selecione uma data (AAAA/MM/DD)</string>
+    <string name="date_format" translatable="false">%1$04d/%2$02d/%3$02d</string>
+    <string name="hint_notes">Observações (máximo de 200 caracteres)</string>
+    <string name="button_addImages">ADICIONAR IMAGENS (OPCIONAL)</string>
+    <string name="title_lista">Lista de filmes</string>
+    <string name="toolbar_list">LISTA</string>
+    <string name="toolbar_map">MAPA</string>
+    <string name="movie_title">Título do filme</string>
+    <string name="launch_date">Data de lançamento</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="dash_seen_movies">Filmes vistos</string>
+    <string name="dash_top_movies">Top filmes</string>
+    <string name="genre">Género</string>
+    <string name="imdb_eval">IMDb:</string>
+    <string name="sinopse">Sinopse (Resumo)</string>
+    <string name="cinema">Cinema</string>
+    <string name="seen_date">Data de visualização</string>
+    <string name="details_btn_imdb">Abrir no IMDB</string>
+    <string name="movie_eval">Avaliação</string>
+    <string name="movie_observ">Observações</string>
+    <string name="voice_search">Pesquisa por voz</string>
+    <string name="default_rating">5.0</string>
+    <string name="movie_image">Imagem do filme</string>
+    <string name="star_icon">Icone de estrela</string>
+    <string name="extra_info">Informações adicionais</string>
+    <string name="middle_dot" translatable="false">・</string>
+    <string name="photos_list">Lista de Fotografias</string>
+    <string name="inserted_photo">Foto inserida</string>
+    <string name="images_added">Imagens inseridas:</string>
+    <string name="default_images_added">0</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
+    <string name="save_confirmation_text">Tem a certeza que quer registar o filme</string>
+    <string name="error_required_field">Este campo é obrigatório</string>
+    <string name="error_movie_doesnt_exist">Este filme não existe</string>
+    <string name="error_movie_already_used">A avaliação deste filme já está registada</string>
+    <string name="error_cinema_doesnt_exist">Este cinema não existe</string>
+    <string name="error_invalid_date">A data está inválida</string>
+    <string name="dialog_title">MICROFONE</string>
+    <string name="dialog_message">Contagem regressiva iniciada</string>
+    <string name="dialog_left_time">Tempo restante:</string>
+</resources>

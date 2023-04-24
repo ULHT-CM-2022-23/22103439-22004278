@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+       <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="10dp"
+            android:paddingTop="20dp">
+
+            <!-- Elemento de UI para a imagem cartaz -->
+            <ImageView
+                android:id="@+id/poster_image"
+                android:layout_width="150dp"
+                android:layout_height="200dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"
+                android:src = "@mipmap/ic_launcher"
+                android:contentDescription="@string/movie_image" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <!-- Elemento de UI para a nome filme -->
+                <TextView
+                    android:id="@+id/movie_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/movie_title"
+                    android:textAppearance="?android:textAppearanceLarge"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <!-- Elemento de UI para a data de lançamento -->
+                    <TextView
+                        android:id="@+id/movie_data_lancamento"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:textAppearanceSmall"
+                        android:text="@string/launch_date" />
+
+                </LinearLayout>
+
+                <!-- Elemento de UI para a genero filme -->
+                <TextView
+                    android:id="@+id/movie_genero"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:textAppearanceSmall"
+                    android:text="@string/genre" />
+
+                <!-- Elemento de UI para a avaliacao -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+
+                    <TextView
+                        android:id="@+id/movie_rating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:textStyle="bold"
+                        android:text="@string/default_rating"/>
+
+                    <ImageView
+                        android:id="@+id/movie_star"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_star"
+                        android:layout_gravity="center_vertical"
+                        android:contentDescription="@string/star_icon" />
+
+                </LinearLayout>
+
+                <!-- Elemento de UI para a avaliação IMDB filme -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="2dp"
+                        android:text="@string/imdb_eval"/>
+
+                    <TextView
+                        android:id="@+id/movie_avaliacao_IMDB"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:textAppearanceSmall"
+                        android:text="@string/imdb_eval"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/imdb_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/details_btn_imdb"
+                    android:textAppearance="?android:textAppearanceSmall"
+                    android:layout_marginTop="1dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/extra_info"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:textStyle="bold" />
+
+            <!-- Elemento de UI para a sinopse -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:text="@string/sinopse"
+                android:textStyle="italic"
+                android:layout_marginTop="10dp" />
+
+            <TextView
+                android:id="@+id/movie_sinopse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:textAppearanceSmall"
+                android:text="@string/sinopse" />
+
+            <!-- Elemento de UI para a nome cinema -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:text="@string/cinema"
+                android:textStyle="italic"
+                android:layout_marginTop="10dp" />
+
+            <TextView
+                android:id="@+id/movie_cinema"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:textAppearanceSmall"
+                android:text="@string/cinema" />
+
+            <!-- Elemento de UI para a data em que o filme foi visto -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:text="@string/seen_date"
+                android:textStyle="italic"
+                android:layout_marginTop="10dp" />
+
+            <TextView
+                android:id="@+id/movie_viewed_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:textAppearanceSmall"
+                android:text="@string/seen_date" />
+
+            <!-- Elemento de UI para a observações -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:text="@string/movie_observ"
+                android:textStyle="italic"
+                android:layout_marginTop="10dp" />
+
+            <TextView
+                android:id="@+id/movie_descicao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:textAppearanceSmall"
+                android:text="@string/movie_observ" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:text="@string/photos_list"
+                android:textStyle="italic"
+                android:layout_marginTop="10dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_imagens"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".DetalheFilmeFragment" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

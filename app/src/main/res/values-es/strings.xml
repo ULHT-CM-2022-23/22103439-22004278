@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Cinecartaz</string>
+    <string name="registo">REGISTRO</string>
+    <string name="lista">LISTA</string>
+    <string name="dashboard">TABLERO</string>
+    <string name="drawer_open">Abierto</string>
+    <string name="drawer_close">Cerrado</string>
+    <string name="button_gravar">Grabar Registro</string>
+    <string name="textfield_filme">Nombre de la película</string>
+    <string name="textfield_cinema">Nombre del cine</string>
+    <string name="title_registar">Registrar nueva evaluación</string>
+    <string name="field_avaliacao">Evaluación (1 a 10)</string>
+    <string name="field_data">Seleccione una fecha (AAAA/MM/DD)</string>
+    <string name="date_format" translatable="false">%1$04d/%2$02d/%3$02d</string>
+    <string name="hint_notes">Observaciones (máximo de 200 caracteres)</string>
+    <string name="button_addImages">AGREGAR IMÁGENES (OPCIONAL)</string>
+    <string name="title_lista">Lista de películas</string>
+    <string name="toolbar_list">LISTA</string>
+    <string name="toolbar_map">MAPA</string>
+    <string name="movie_title">Título de la película</string>
+    <string name="launch_date">Fecha de lanzamiento</string>
+    <string name="title_dashboard">Tablero</string>
+    <string name="dash_seen_movies">Películas vistas</string>
+    <string name="dash_top_movies">Top películas</string>
+    <string name="genre">Género</string>
+    <string name="imdb_eval">IMDb:</string>
+    <string name="sinopse">Sinopsis (Resumen)</string>
+    <string name="cinema">Cine</string>
+    <string name="seen_date">Fecha de visualización</string>
+    <string name="details_btn_imdb">Abrir en IMDb</string>
+    <string name="movie_eval">Evaluación</string>
+    <string name="movie_observ">Observaciones</string>
+    <string name="voice_search">Búsqueda por voz</string>
+    <string name="default_rating">5.0</string>
+    <string name="movie_image">Imagen de la película</string>
+    <string name="star_icon">Ícono de estrella</string>
+    <string name="extra_info">Información adicional</string>
+    <string name="middle_dot" translatable="false">・</string>
+    <string name="photos_list">Lista de Fotografías</string>
+    <string name="inserted_photo">Foto insertada</string>
+    <string name="images_added">Imágenes insertadas:</string>
+    <string name="default_images_added">0</string>
+    <string name="yes">Sí</string>
+    <string name="no">No</string>
+    <string name="save_confirmation_text">¿Está seguro de que desea registrar la película?</string>
+    <string name="error_required_field">Este campo es obligatorio</string>
+    <string name="error_movie_doesnt_exist">Esta película no existe</string>
+    <string name="error_movie_already_used">La evaluación de esta película ya está registrada</string>
+    <string name="error_cinema_doesnt_exist">Este cine no existe</string>
+    <string name="error_invalid_date">La fecha es inválida</string>
+    <string name="dialog_title">MICRÓFONO</string>
+    <string name="dialog_message">Cuenta regresiva iniciada</string>
+    <string name="dialog_left_time">Tiempo restante:</string>
+</resources>

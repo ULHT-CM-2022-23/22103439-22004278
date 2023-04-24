@@ -1,0 +1,19 @@
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group>
+        <item
+            android:id="@+id/nav_dashboard"
+            android:icon="@drawable/ic_dashboard"
+            android:title="@string/dashboard"/>
+        <item
+            android:id="@+id/nav_registo"
+            android:icon="@drawable/ic_regist"
+            android:title="@string/registo"/>
+        <item
+            android:id="@+id/nav_lista"
+            android:icon="@drawable/ic_view_list"
+            android:title="@string/lista"/>
+    </group>
+
+</menu>
