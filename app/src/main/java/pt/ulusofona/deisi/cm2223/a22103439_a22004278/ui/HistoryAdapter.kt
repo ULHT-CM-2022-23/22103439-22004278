@@ -22,7 +22,7 @@ class HistoryAdapter (
 
         override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
             holder.itemView.setOnClickListener { onClick(items[position]) }
-            holder.binding.textExpression.text = items[position].filmeIMDB.nomeIMDB
+            holder.binding.textExpression.text = items[position].filmeIMDB.nome
             holder.binding.textResult.text = items[position].avalicaoUtilizador.toString()
             holder.binding.textObs?.text = items[position].observacaoUtilizador
         }

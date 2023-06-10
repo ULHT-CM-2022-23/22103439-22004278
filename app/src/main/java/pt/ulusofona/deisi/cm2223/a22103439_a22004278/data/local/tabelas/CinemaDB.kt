@@ -4,9 +4,9 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "cinemasbd")
+@Entity(tableName = "cinemas")
 data class CinemaDB(
     @PrimaryKey
-    @ColumnInfo(name = "id_Cinema") val idCinema: Int,
-    @ColumnInfo(name = "nome_Cinema") val nomeCinema: String,
+    @ColumnInfo(name = "id") val id: Int,
+    @ColumnInfo(name = "nome") val nome: String,
 )

@@ -8,6 +8,6 @@ class Avaliacao (
     val avalicaoUtilizador: Int,
     val dataVisualizacaoUtilizador: Date,
     val observacaoUtilizador: String,
-    val filmeIMDB: IMDBFilme,
+    val filmeIMDB: Filme,
     val cinemaJSON: Cinema
 ): Serializable

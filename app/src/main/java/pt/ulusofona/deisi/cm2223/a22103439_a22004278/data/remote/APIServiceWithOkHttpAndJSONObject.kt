@@ -1,19 +1,19 @@
 package pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.remote
 import okhttp3.*
 import org.json.JSONObject
-import pt.ulusofona.deisi.cm2223.a22103439_a22004278.IMDB_API_BASE_URL
-import pt.ulusofona.deisi.cm2223.a22103439_a22004278.IMDB_API_TOKEN
+import pt.ulusofona.deisi.cm2223.a22103439_a22004278.API_BASE_URL
+import pt.ulusofona.deisi.cm2223.a22103439_a22004278.API_TOKEN
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Avaliacao
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Cinema
-import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.IMDB
-import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.IMDBFilme
+import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Operations
+import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Filme
 import java.io.IOException
 
-class IMDBServiceWithOkHttpAndJSONObject(
-    val baseUrl: String = IMDB_API_BASE_URL,
-    var apiKey: String = IMDB_API_TOKEN,
+class APIServiceWithOkHttpAndJSONObject(
+    val baseUrl: String = API_BASE_URL,
+    var apiKey: String = API_TOKEN,
     val client: OkHttpClient,
-) : IMDB() {
+) : Operations() {
 
     override fun getAvaliacao(id: String, onFinished: (Result<Avaliacao>) -> Unit) {
         throw Exception("Illegal operation")
@@ -23,7 +23,7 @@ class IMDBServiceWithOkHttpAndJSONObject(
         throw Exception("Illegal operation")
     }
 
-    override fun getFilmeIMDB(nomeFilme: String, onFinished: (Result<IMDBFilme>) -> Unit) {
+    override fun getFilmeByName(nomeFilme: String, onFinished: (Result<Filme>) -> Unit) {
         val request: Request = Request.Builder()
             .url("$baseUrl/?type=movie&t=$nomeFilme&apikey=$apiKey")
             .build()
@@ -50,7 +50,7 @@ class IMDBServiceWithOkHttpAndJSONObject(
                             val imdbRating = jsonObject.getString("imdbRating")
                             val poster = jsonObject.getString("Poster")
 
-                            val filme = IMDBFilme(
+                            val filme = Filme(
                                     imdbID,
                                     title,
                                     genre,
@@ -79,6 +79,10 @@ class IMDBServiceWithOkHttpAndJSONObject(
         TODO("Not yet implemented")
     }
 
+    override fun clearAllCinemas(onFinished: () -> Unit) {
+        TODO("Not yet implemented")
+    }
+
     override fun getCinemaByNome(nomeCinema: String, onFinished: (Result<Cinema>) -> Unit) {
         TODO("Not yet implemented")
     }
@@ -87,11 +91,11 @@ class IMDBServiceWithOkHttpAndJSONObject(
         TODO("Not yet implemented")
     }
 
-    override fun clearAllCharacters(onFinished: () -> Unit) {
+    override fun clearAll(onFinished: () -> Unit) {
         throw Exception("Illegal operation")
     }
 
-    override fun inserirAvaliacao(filme: IMDBFilme,avaliacao: Avaliacao,onFinished: (Result<IMDBFilme>) -> Unit) {
+    override fun inserirAvaliacao(filme: Filme, avaliacao: Avaliacao, onFinished: (Result<Filme>) -> Unit) {
         TODO("Not yet implemented")
     }
 

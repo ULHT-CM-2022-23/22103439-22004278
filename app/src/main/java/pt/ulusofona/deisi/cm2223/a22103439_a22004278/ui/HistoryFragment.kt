@@ -11,7 +11,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.R
-import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.IMDBRepository
+import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.Repository
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.databinding.FragmentHistoryBinding
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Avaliacao
 
@@ -19,7 +19,7 @@ class HistoryFragment : Fragment() {
 
     private val adapter = HistoryAdapter(::onOperationClick)
     private lateinit var binding: FragmentHistoryBinding
-    private val model = IMDBRepository.getInstance()
+    private val model = Repository.getInstance()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?):
             View? {

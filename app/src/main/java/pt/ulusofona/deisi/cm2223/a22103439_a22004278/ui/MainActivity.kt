@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.Gravity
 import android.view.MenuItem
-import android.view.inputmethod.CorrectionInfo
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
@@ -13,19 +12,19 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.R
-import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.IMDBRepository
+import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.Repository
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.databinding.ActivityMainBinding
-import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.IMDB
+import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Operations
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var model: IMDB
+    private lateinit var model: Operations
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        model = IMDBRepository.getInstance()
+        model = Repository.getInstance()
 
         if(!screenRotated(savedInstanceState)) {
             NavigationManager.goToDashboardFragment(supportFragmentManager)

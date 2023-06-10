@@ -4,13 +4,13 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "avaliacoesbd")
+@Entity(tableName = "avaliacoes")
 data class AvaliacaoDB (
     @PrimaryKey
-    @ColumnInfo(name = "id_utilizador") val idUtilizador: String,
-    @ColumnInfo(name = "avaliacao_utilizador") val avalicaoUtilizador: Int,
-    @ColumnInfo(name = "data_visualizacao_utilizador") val dataVisualizacaoUtilizador: Long,
-    @ColumnInfo(name = "observacao_utilizador") val observacaoUtilizador: String,
+    @ColumnInfo(name = "id") val id: String,
+    @ColumnInfo(name = "avaliacao") val avaliacao: Int,
+    @ColumnInfo(name = "data_visualizacao") val dataVisualizacao: Long,
+    @ColumnInfo(name = "observacoes") val observacoes: String,
     val idFilme: String,
     val idCinema: Int
 )

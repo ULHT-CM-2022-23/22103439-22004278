@@ -13,17 +13,16 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.R
-import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.IMDBRepository
+import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.Repository
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.databinding.FragmentDetalheFilmeBinding
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Avaliacao
-import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.IMDB
 
 
 private const val ARG_OPERATION_UUID = "ARG_OPERATION_UUID"
 
 class DetalheFilmeFragment : Fragment() {
 
-    private val model = IMDBRepository.getInstance()
+    private val model = Repository.getInstance()
     private lateinit var binding: FragmentDetalheFilmeBinding
     private var operationUuid: String? = null
 
@@ -49,21 +48,21 @@ class DetalheFilmeFragment : Fragment() {
                     CoroutineScope(Dispatchers.Main).launch {
                         binding.rvImagens.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                         //binding.rvImagens.adapter = ImagemDetalheAdapter(ui.getImages())
-                        binding.movieTitle.text =  avaliacao.filmeIMDB.nomeIMDB
-                        binding.movieGenero.text = avaliacao.filmeIMDB.generoIMDB
+                        binding.movieTitle.text =  avaliacao.filmeIMDB.nome
+                        binding.movieGenero.text = avaliacao.filmeIMDB.genero
                         binding.movieRating.text = avaliacao.avalicaoUtilizador.toString()
-                        binding.movieAvaliacaoIMDB.text = avaliacao.filmeIMDB.avaliacaoIMDB
-                        binding.movieDataLancamento.text = avaliacao.filmeIMDB.dataLancamentoIMDB
-                        binding.movieSinopse.text = avaliacao.filmeIMDB.sinopseIMDB
+                        binding.movieAvaliacaoIMDB.text = avaliacao.filmeIMDB.avaliacao
+                        binding.movieDataLancamento.text = avaliacao.filmeIMDB.dataLancamento
+                        binding.movieSinopse.text = avaliacao.filmeIMDB.sinopse
                         binding.movieCinema.text = avaliacao.cinemaJSON?.cinema_name
                         binding.movieViewedDate.text = avaliacao.dataVisualizacaoUtilizador.toString()
                         binding.movieDescicao.text = avaliacao.observacaoUtilizador
                         binding.imdbButton.setOnClickListener{
-                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(avaliacao.filmeIMDB.linkIMDB))
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(avaliacao.filmeIMDB.link))
                             startActivity(intent)
                         }
 
-                        val imagemCartaz = context?.resources?.getIdentifier(avaliacao.filmeIMDB.imagemCartazIMDB, "drawable",  context?.packageName)
+                        val imagemCartaz = context?.resources?.getIdentifier(avaliacao.filmeIMDB.imagemCartaz, "drawable",  context?.packageName)
                         if (imagemCartaz != null) {
                             binding.posterImage.setImageResource(imagemCartaz)
                         }

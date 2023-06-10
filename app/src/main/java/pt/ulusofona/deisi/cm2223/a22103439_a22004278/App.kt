@@ -15,7 +15,7 @@ object App {
     }
 
     fun listaOrdenadaPorDataVisualizacao() : List<Avaliacao> {
-        return filmesIMDB.sortedByDescending { it.filmeIMDB.dataLancamentoIMDB }
+        return filmesIMDB.sortedByDescending { it.filmeIMDB.dataLancamento }
     }
 
     fun dataAbreviada(dataVisualizacao: Date):String {

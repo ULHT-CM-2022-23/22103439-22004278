@@ -18,12 +18,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.R
-import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.IMDBRepository
+import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.Repository
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.databinding.FragmentRegistarFilmeBinding
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Avaliacao
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Cinema
-import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.IMDB
-import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.IMDBFilme
+import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Operations
+import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Filme
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -32,7 +32,7 @@ private lateinit var photoFile: File
 
 class RegistarFilmeFragment : Fragment() {
 
-    private lateinit var model: IMDB
+    private lateinit var model: Operations
     private lateinit var binding: FragmentRegistarFilmeBinding
     private var selectedImages = mutableListOf<File>()
 
@@ -61,7 +61,7 @@ class RegistarFilmeFragment : Fragment() {
 
         binding.cinemaEditText.setAdapter(adapterCinema)*/
 
-        model = IMDBRepository.getInstance()
+        model = Repository.getInstance()
 
         return binding.root
     }
@@ -122,18 +122,18 @@ class RegistarFilmeFragment : Fragment() {
                         // Cria uma nova instância de Movie com os dados do formulário
 
                         CoroutineScope(Dispatchers.IO).launch {
-                            model.getFilmeIMDB(nome){
+                            model.getFilmeByName(nome){
                                 if(it.isSuccess){
                                     it.onSuccess {
-                                        val filme = IMDBFilme(
-                                            idIMDB = it.idIMDB,
-                                            nomeIMDB = it.nomeIMDB,
-                                            generoIMDB = it.generoIMDB,
-                                            sinopseIMDB = it.sinopseIMDB,
-                                            dataLancamentoIMDB = it.dataLancamentoIMDB,
-                                            avaliacaoIMDB = it.avaliacaoIMDB,
-                                            linkIMDB = it.linkIMDB,
-                                            imagemCartazIMDB = it.imagemCartazIMDB
+                                        val filme = Filme(
+                                            id = it.id,
+                                            nome = it.nome,
+                                            genero = it.genero,
+                                            sinopse = it.sinopse,
+                                            dataLancamento = it.dataLancamento,
+                                            avaliacao = it.avaliacao,
+                                            link = it.link,
+                                            imagemCartaz = it.imagemCartaz
                                         )
 
 

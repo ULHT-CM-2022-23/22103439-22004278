@@ -1,7 +1,6 @@
 package pt.ulusofona.deisi.cm2223.a22103439_a22004278.data
 
 import android.content.Context
-import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -10,24 +9,23 @@ import org.json.JSONObject
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.remote.ConnectivityUtil
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Avaliacao
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Cinema
-import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.IMDB
-import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.IMDBFilme
+import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Operations
+import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Filme
 import java.io.BufferedReader
-import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
 import java.lang.IllegalStateException
 
-class IMDBRepository private constructor(val local: IMDB, val remote: IMDB, val context: Context): IMDB() {
+class Repository private constructor(val local: Operations, val remote: Operations, val context: Context): Operations() {
     val inputStream: InputStream = context.assets.open("cinemas.json")
     val inputStreamReader: InputStreamReader = InputStreamReader(inputStream)
     val bufferedReader: BufferedReader = BufferedReader(inputStreamReader)
 
-    override fun clearAllCharacters(onFinished: () -> Unit) {
+    override fun clearAll(onFinished: () -> Unit) {
         throw Exception("Illegal operation")
     }
 
-    override fun inserirAvaliacao(filme: IMDBFilme, avaliacao: Avaliacao, onFinished: (Result<IMDBFilme>) -> Unit) {
+    override fun inserirAvaliacao(filme: Filme, avaliacao: Avaliacao, onFinished: (Result<Filme>) -> Unit) {
         if (ConnectivityUtil.isOnline(context)) {
             local.inserirAvaliacao(filme, avaliacao){
                 onFinished(Result.success(filme))
@@ -60,15 +58,19 @@ class IMDBRepository private constructor(val local: IMDB, val remote: IMDB, val 
                         )
                 )
             }
-            local.clearAllCinemas {
-                local.inserirCinemas(cinemas) {
-                    onFinished(Result.success(cinemas))
-                }
+
+            local.clearAll {  }
+            local.inserirCinemas(cinemas) {
+                onFinished(Result.success(cinemas))
             }
         }
     }
 
     override fun inserirCinemas(cinemas: List<Cinema>, onFinished: () -> Unit) {
+        TODO("Not yet implemented")
+    }
+
+    override fun clearAllCinemas(onFinished: () -> Unit) {
         TODO("Not yet implemented")
     }
 
@@ -93,30 +95,30 @@ class IMDBRepository private constructor(val local: IMDB, val remote: IMDB, val 
         }
     }
 
-    override fun getFilmeIMDB(nomeFilme: String, onFinished: (Result<IMDBFilme>) -> Unit) {
+    override fun getFilmeByName(nomeFilme: String, onFinished: (Result<Filme>) -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
-            remote.getFilmeIMDB(nomeFilme){
+            remote.getFilmeByName(nomeFilme){
                 onFinished(it)
             }
         }
     }
 
     companion object {
-        private var instance: IMDBRepository? = null
+        private var instance: Repository? = null
 
-        fun init(local: IMDB, remote: IMDB, context: Context) {
+        fun init(local: Operations, remote: Operations, context: Context) {
             synchronized(this) {
                 if (instance == null) {
-                    instance = IMDBRepository(local, remote, context)
+                    instance = Repository(local, remote, context)
                 }
             }
         }
 
-        fun getInstance(): IMDBRepository {
+        fun getInstance(): Repository {
             if (instance == null) {
                 throw IllegalStateException("singleton not initialized")
             }
-            return instance as IMDBRepository
+            return instance as Repository
 
         }
     }
