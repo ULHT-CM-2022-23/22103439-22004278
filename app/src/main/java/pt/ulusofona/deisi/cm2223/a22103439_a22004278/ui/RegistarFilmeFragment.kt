@@ -19,9 +19,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.R
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.IMDBRepository
-
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.databinding.FragmentRegistarFilmeBinding
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Avaliacao
+import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Cinema
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.IMDB
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.IMDBFilme
 import java.io.File
@@ -34,7 +34,6 @@ class RegistarFilmeFragment : Fragment() {
 
     private lateinit var model: IMDB
     private lateinit var binding: FragmentRegistarFilmeBinding
-    //private lateinit var listaDados: App
     private var selectedImages = mutableListOf<File>()
 
     override fun onCreateView(
@@ -137,17 +136,18 @@ class RegistarFilmeFragment : Fragment() {
                                             imagemCartazIMDB = it.imagemCartazIMDB
                                         )
 
+
                                         val avaliacao = Avaliacao(
                                             UUID.randomUUID().toString(),
                                             binding.seekBar.progress + 1,
                                             date!!,
                                             binding.notesEditText.text.toString(),
                                             filme,
-                                            null,
+                                            Cinema(1,"Colombo"),
                                             // selectedImages, // Coloque aqui a lista de URIs para as fotos tiradas com a câmera, caso deseje implementar
                                         )
 
-                                        model.inserirAvaliacao(filme.nomeIMDB,avaliacao){
+                                        model.inserirAvaliacao(filme,avaliacao){
                                         }
 
                                     }
@@ -155,8 +155,6 @@ class RegistarFilmeFragment : Fragment() {
                             }
                         }
 
-                        // Salva o filme em algum lugar (ex: uma lista em memória ou um banco de dados)
-                        //saveMovie(movie)
                     },
                     negativeButtonAction = {}
                 )
@@ -216,18 +214,6 @@ class RegistarFilmeFragment : Fragment() {
             null
         }
     }
-
-    // Função auxiliar para salvar o filme em algum lugar (ex: uma lista em memória ou um banco de dados)
-/*    private fun saveMovie(movie: Review) {
-        // Implemente a lógica para salvar o filme em algum lugar
-        App.filmesVistos.add(movie)
-        binding.nameEditText.text?.clear()
-        binding.cinemaEditText.text?.clear()
-        binding.seekBar.progress = 0
-        binding.notesEditText.text?.clear()
-        binding.datePicker.text?.clear()
-        binding.textInserido.text = 0.toString()
-    }*/
 
     fun showConfirmationDialog(
         message: String,
