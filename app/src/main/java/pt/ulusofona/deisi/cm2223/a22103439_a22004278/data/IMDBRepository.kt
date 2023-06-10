@@ -19,20 +19,9 @@ import java.io.InputStreamReader
 import java.lang.IllegalStateException
 
 class IMDBRepository private constructor(val local: IMDB, val remote: IMDB, val context: Context): IMDB() {
-
     val inputStream: InputStream = context.assets.open("cinemas.json")
-
     val inputStreamReader: InputStreamReader = InputStreamReader(inputStream)
     val bufferedReader: BufferedReader = BufferedReader(inputStreamReader)
-
-    val stringBuilder = StringBuilder()
-
-    var line: String? = bufferedReader.readLine()
-    val jsonString = stringBuilder.toString()
-    val jsonObject = JSONObject(jsonString)
-
-    val CinemaList = jsonObject["cinemas"] as JSONArray
-    val cinemas = mutableListOf<Cinema>()
 
     override fun clearAllCharacters(onFinished: () -> Unit) {
         throw Exception("Illegal operation")
@@ -49,25 +38,30 @@ class IMDBRepository private constructor(val local: IMDB, val remote: IMDB, val 
     override fun getCinemaJSON(onFinished: (Result<List<Cinema>>) -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
 
-
-
+            val stringBuilder = StringBuilder()
+            var line: String? = bufferedReader.readLine()
             while (line != null){
                 stringBuilder.append(line)
                 line = bufferedReader.readLine()
             }
+            val jsonString = stringBuilder.toString()
 
-
-
-            for (i in 0 until CinemaList.length()) {
-                val cinema = CinemaList[i] as JSONObject
+            val jsonObject = JSONObject(jsonString)
+            val jsonCinemaList = jsonObject["cinemas"] as JSONArray
+            val cinemas = mutableListOf<Cinema>()
+            for (i in 0 until jsonCinemaList.length()) {
+                val cinema = jsonCinemaList[i] as JSONObject
 
                 cinemas.add(
                     Cinema(
                         cinema["cinema_id"].toString().toInt(),
                         cinema["cinema_name"].toString(),
-                    )
+
+                        )
                 )
-                local.inserirCinemas(cinemas){
+            }
+            local.clearAllCinemas {
+                local.inserirCinemas(cinemas) {
                     onFinished(Result.success(cinemas))
                 }
             }
