@@ -4,11 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.databinding.ItemExpressionBinding
-import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Review
+import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Avaliacao
 
 class HistoryAdapter (
-    private val onClick: (String) -> Unit,
-    private var items: List<Review> = listOf()
+    private val onClick: (Avaliacao) -> Unit,
+    private var items: List<Avaliacao> = listOf()
 ) : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>()
 {
     class HistoryViewHolder(val binding: ItemExpressionBinding) : RecyclerView.ViewHolder(binding.root)
@@ -21,12 +21,16 @@ class HistoryAdapter (
         }
 
         override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
-            holder.itemView.setOnClickListener { onClick(items[position].id) }
-            holder.binding.textExpression.text = items[position].filme.nome
-            holder.binding.textResult.text = items[position].avalicao.toString()
-            holder.binding.textObs?.text = items[position].observacao
+            holder.itemView.setOnClickListener { onClick(items[position]) }
+            holder.binding.textExpression.text = items[position].filmeIMDB.nomeIMDB
+            holder.binding.textResult.text = items[position].avalicaoUtilizador.toString()
+            holder.binding.textObs?.text = items[position].observacaoUtilizador
         }
 
         override fun getItemCount() = items.size
 
+        fun updateItem(items: List<Avaliacao>){
+            this.items = items
+            notifyDataSetChanged()
+        }
 }

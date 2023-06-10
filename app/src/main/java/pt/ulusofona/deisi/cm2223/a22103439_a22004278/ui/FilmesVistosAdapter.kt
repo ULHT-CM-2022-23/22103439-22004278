@@ -3,12 +3,12 @@ package pt.ulusofona.deisi.cm2223.a22103439_a22004278.ui
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import pt.ulusofona.deisi.cm2223.a22103439_a22004278.App
+
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.databinding.FilmeVistosItemLayoutBinding
-import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Review
+import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Avaliacao
 
 class FilmesVistosAdapter(
-    private var items: List<Review> = listOf()
+    private var items: List<Avaliacao> = listOf()
 ) : RecyclerView.Adapter<FilmesVistosAdapter.FilmesVistosViewHolder>()
 {
 
@@ -23,11 +23,11 @@ class FilmesVistosAdapter(
         }
 
     override fun onBindViewHolder(holder: FilmesVistosViewHolder, position: Int) {
-        holder.binding.filmeTitulo.text = items[position].filme.nome
-        holder.binding.filmeAvaliacao.text = items[position].avalicao.toString()
-        holder.binding.filmeData.text = App.dataAbreviada(items[position].dataVisualizacao)
+        holder.binding.filmeTitulo.text = items[position].filmeIMDB.nomeIMDB
+        holder.binding.filmeAvaliacao.text = items[position].avalicaoUtilizador.toString()
+        holder.binding.filmeData.text = items[position].dataVisualizacaoUtilizador.toString()
 
-        val imagemCartaz = holder.itemView.context.resources.getIdentifier(items[position].filme.imagemCartaz, "drawable",  holder.itemView.context.packageName)
+        val imagemCartaz = holder.itemView.context.resources.getIdentifier(items[position].filmeIMDB.imagemCartazIMDB, "drawable",  holder.itemView.context.packageName)
         holder.binding.filmeImagem.setImageResource(imagemCartaz)
     }
 
