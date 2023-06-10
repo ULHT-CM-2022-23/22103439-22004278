@@ -1,4 +1,4 @@
-package pt.ulusofona.deisi.cm2223.a22103439_a22004278
+package pt.ulusofona.deisi.cm2223.a22103439_a22004278.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

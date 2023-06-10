@@ -1,4 +1,4 @@
-package pt.ulusofona.deisi.cm2223.a22103439_a22004278
+package pt.ulusofona.deisi.cm2223.a22103439_a22004278.ui
 
 import android.content.Intent
 import android.net.Uri
@@ -8,7 +8,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import pt.ulusofona.deisi.cm2223.a22103439_a22004278.App
+import pt.ulusofona.deisi.cm2223.a22103439_a22004278.R
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.databinding.FragmentDetalheFilmeBinding
+import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Review
 
 private const val ARG_OPERATION_UUID = "ARG_OPERATION_UUID"
 

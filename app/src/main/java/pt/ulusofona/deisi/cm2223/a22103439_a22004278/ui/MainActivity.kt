@@ -1,4 +1,4 @@
-package pt.ulusofona.deisi.cm2223.a22103439_a22004278
+package pt.ulusofona.deisi.cm2223.a22103439_a22004278.ui
 import android.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
+import pt.ulusofona.deisi.cm2223.a22103439_a22004278.R
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

@@ -1,9 +1,10 @@
-package pt.ulusofona.deisi.cm2223.a22103439_a22004278
+package pt.ulusofona.deisi.cm2223.a22103439_a22004278.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.databinding.ItemExpressionBinding
+import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Review
 
 class HistoryAdapter (
     private val onClick: (String) -> Unit,

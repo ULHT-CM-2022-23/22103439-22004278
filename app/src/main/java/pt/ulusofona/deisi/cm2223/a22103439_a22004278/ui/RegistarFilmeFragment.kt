@@ -1,4 +1,4 @@
-package pt.ulusofona.deisi.cm2223.a22103439_a22004278
+package pt.ulusofona.deisi.cm2223.a22103439_a22004278.ui
 
 import android.app.Activity
 import android.app.AlertDialog
@@ -8,23 +8,38 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import pt.ulusofona.deisi.cm2223.a22103439_a22004278.App
+import pt.ulusofona.deisi.cm2223.a22103439_a22004278.R
+import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.IMDBRepository
+import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.remote.ConnectivityUtil
 
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.databinding.FragmentRegistarFilmeBinding
+import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Avaliacao
+import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.IMDB
+import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.IMDBFilme
+import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Review
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
 private lateinit var photoFile: File
 
-
 class RegistarFilmeFragment : Fragment() {
+
+    private lateinit var model: IMDB
+
     private lateinit var binding: FragmentRegistarFilmeBinding
     private lateinit var listaDados: App
     private var selectedImages = mutableListOf<File>()
@@ -54,6 +69,8 @@ class RegistarFilmeFragment : Fragment() {
 
         binding.cinemaEditText.setAdapter(adapterCinema)
 
+        model = IMDBRepository.getInstance()
+
         return binding.root
     }
 
@@ -70,30 +87,47 @@ class RegistarFilmeFragment : Fragment() {
 
             var preenchido = true
 
-            if (nome.isEmpty()){
+            if (nome.isEmpty() || nome == ""){
                 binding.nameEditText.error = "Este campo é obrigatório"
                 preenchido = false
             }
 
-            val filmeSelecionado = listaDados.getFilmeByName(nome)
+            val filme = model.getFilmeIMDB(nome){
+                it.getOrNull().let {
+                    if (it != null) {
+                        IMDBFilme(
+                            it.idIMDB,
+                            it.nomeIMDB,
+                            it.generoIMDB,
+                            it.sinopseIMDB,
+                            it.dataLancamentoIMDB,
+                            it.avaliacaoIMDB,
+                            it.linkIMDB,
+                            it.imagemCartazIMDB,
+                        )
+                    }
+                }
+            }
+
+            val filmeSelecionado = App.getFilmeByName(nome)
             if (filmeSelecionado == null){
                 binding.nameEditText.error = "Este filme não existe"
                 preenchido = false
             }else {
-                if (listaDados.reviewExists(filmeSelecionado)) {
+                if (App.reviewExists(filmeSelecionado)) {
                     binding.nameEditText.error = "A avaliação deste filme já está registada"
                     preenchido = false
                 }
             }
 
-            if (cinema.isEmpty()){
+            if (cinema.isEmpty() || cinema == ""){
                 binding.cinemaEditText.error = "Este campo é obrigatório"
                 preenchido = false
             }
 
-            val cinemaSelecionado = listaDados.getCinemaByName(cinema)
+            val cinemaSelecionado = App.getCinemaByName(cinema)
             if (cinemaSelecionado == null){
-                binding.cinemaEditText.error = "A data está inválida"
+                binding.cinemaEditText.error = "Este cinema não existe"
                 preenchido = false
             }
 
@@ -103,21 +137,25 @@ class RegistarFilmeFragment : Fragment() {
             }
 
             if (preenchido) {
-
                 showConfirmationDialog(
                     message = "Tem a certeza que quer registar o filme ${nome}?",
                     positiveButtonAction = {
                         // Lógica a ser executada se o usuário clicar em "Sim"
                         // Cria uma nova instância de Movie com os dados do formulário
-                        val movie = Review(
+                        val movie = Avaliacao(
                             UUID.randomUUID().toString(),
-                            filmeSelecionado!!,
-                            cinemaSelecionado!!,
                             binding.seekBar.progress + 1,
                             date!!,
-                            selectedImages, // Coloque aqui a lista de URIs para as fotos tiradas com a câmera, caso deseje implementar
-                            binding.notesEditText.text.toString()
+                            binding.notesEditText.text.toString(),
+                            filme,
+                            cinemaSelecionado!!,
+
+
+                           // selectedImages, // Coloque aqui a lista de URIs para as fotos tiradas com a câmera, caso deseje implementar
+
                         )
+
+                        model.inserirAvaliacao(nome, movie)
 
                         // Salva o filme em algum lugar (ex: uma lista em memória ou um banco de dados)
                         saveMovie(movie)
@@ -168,6 +206,31 @@ class RegistarFilmeFragment : Fragment() {
             }
 
             datePickerDialog.show()
+        }
+
+        binding.buttonTesteAvatar.setOnClickListener {
+            CoroutineScope(Dispatchers.IO).launch {
+                // call getCharacters on the "IO Thread"
+                model.getFilmeIMDB(binding.nameEditText.text.toString()) { result ->
+                    // process the result in the "Main Thread" since it will change the view
+                    CoroutineScope(Dispatchers.Main).launch {
+                        if (result.isSuccess) {
+/*                            if (!ConnectivityUtil.isOnline(this@RegistarFilmeFragment)) {
+                                //Toast.makeText(this@RegistarFilmeFragment, "You are offline. Retrieved characters from the local database", Toast.LENGTH_SHORT).show()
+                            }*/
+                        } else {
+                            // show a dialog
+/*                            androidx.appcompat.app.AlertDialog.Builder(this@RegistarFilmeFragment)
+                                .setTitle("Error")
+                                .setMessage("There was an error connecting to the server")
+                                .setPositiveButton("OK") { _,_ -> }
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .create()
+                                .show()*/
+                        }
+                    }
+                }
+            }
         }
     }
 

@@ -1,4 +1,4 @@
-package pt.ulusofona.deisi.cm2223.a22103439_a22004278
+package pt.ulusofona.deisi.cm2223.a22103439_a22004278.model
 
 import java.util.*
 
@@ -10,7 +10,4 @@ class Filme (
     val avaliacao: Int,
     val link: String,
     val imagemCartaz: String,
-    )
-{
-
-}
+)

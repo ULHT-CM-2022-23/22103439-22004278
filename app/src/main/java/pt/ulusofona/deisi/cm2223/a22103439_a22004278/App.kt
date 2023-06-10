@@ -1,5 +1,6 @@
 package pt.ulusofona.deisi.cm2223.a22103439_a22004278
 
+import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.*
 import java.text.SimpleDateFormat
 import java.util.*
 
