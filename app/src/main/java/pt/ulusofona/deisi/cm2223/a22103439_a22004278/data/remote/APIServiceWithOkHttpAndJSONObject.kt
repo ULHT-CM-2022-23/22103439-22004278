@@ -7,7 +7,10 @@ import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Avaliacao
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Cinema
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Operations
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Filme
+import java.io.BufferedReader
 import java.io.IOException
+import java.io.InputStream
+import java.io.InputStreamReader
 
 class APIServiceWithOkHttpAndJSONObject(
     val baseUrl: String = API_BASE_URL,
@@ -20,6 +23,10 @@ class APIServiceWithOkHttpAndJSONObject(
     }
 
     override fun getAllAvaliacoes(onFinished: (Result<List<Avaliacao>>) -> Unit) {
+        throw Exception("Illegal operation")
+    }
+
+    override fun getAvaliacaoByFilme(idFilme: String, onFinished: (Result<Avaliacao>) -> Unit) {
         throw Exception("Illegal operation")
     }
 
@@ -42,15 +49,18 @@ class APIServiceWithOkHttpAndJSONObject(
                         if (body != null) {
                             val jsonObject = JSONObject(body)
 
-                            val imdbID = jsonObject.getString("imdbID")
-                            val title = jsonObject.getString("Title")
-                            val genre = jsonObject.getString("Genre")
-                            val plot = jsonObject.getString("Plot")
-                            val released = jsonObject.getString("Released")
-                            val imdbRating = jsonObject.getString("imdbRating")
-                            val poster = jsonObject.getString("Poster")
+                            if (jsonObject.getString("Response") == "False") {
+                                onFinished(Result.failure(IOException("Movie not found")))
+                            } else {
+                                val imdbID = jsonObject.getString("imdbID")
+                                val title = jsonObject.getString("Title")
+                                val genre = jsonObject.getString("Genre")
+                                val plot = jsonObject.getString("Plot")
+                                val released = jsonObject.getString("Released")
+                                val imdbRating = jsonObject.getString("imdbRating")
+                                val poster = jsonObject.getString("Poster")
 
-                            val filme = Filme(
+                                val filme = Filme(
                                     imdbID,
                                     title,
                                     genre,
@@ -61,34 +71,37 @@ class APIServiceWithOkHttpAndJSONObject(
                                     poster
                                 )
 
-                            onFinished(Result.success(filme))
+                                onFinished(Result.success(filme))
+                            }
                         }
-
                     }
-
                 }
             }
         })
     }
 
     override fun getCinemaJSON(onFinished: (Result<List<Cinema>>) -> Unit) {
-        TODO("Not yet implemented")
+        throw Exception("Illegal operation")
+    }
+
+    override fun getAllCinemas(onFinished: (Result<List<Cinema>>) -> Unit) {
+        throw Exception("Illegal operation")
     }
 
     override fun inserirCinemas(cinemas: List<Cinema>, onFinished: () -> Unit) {
-        TODO("Not yet implemented")
+        throw Exception("Illegal operation")
     }
 
     override fun clearAllCinemas(onFinished: () -> Unit) {
-        TODO("Not yet implemented")
+        throw Exception("Illegal operation")
     }
 
     override fun getCinemaByNome(nomeCinema: String, onFinished: (Result<Cinema>) -> Unit) {
-        TODO("Not yet implemented")
+        throw Exception("Illegal operation")
     }
 
     override fun getCinemaById(idCinema: Int, onFinished: (Result<Cinema>) -> Unit) {
-        TODO("Not yet implemented")
+        throw Exception("Illegal operation")
     }
 
     override fun clearAll(onFinished: () -> Unit) {
@@ -96,7 +109,7 @@ class APIServiceWithOkHttpAndJSONObject(
     }
 
     override fun inserirAvaliacao(filme: Filme, avaliacao: Avaliacao, onFinished: (Result<Filme>) -> Unit) {
-        TODO("Not yet implemented")
+        throw Exception("Illegal operation")
     }
 
 }

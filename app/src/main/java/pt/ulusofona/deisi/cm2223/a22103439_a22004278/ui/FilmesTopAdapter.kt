@@ -23,11 +23,11 @@ class FilmesTopAdapter (
 
     override fun onBindViewHolder(holder: FilmesTopViewHolder, position: Int) {
 
-        holder.binding.filmeTitulo.text = items[position].filmeIMDB.nome
-        holder.binding.filmeAvaliacao.text = items[position].avalicaoUtilizador.toString()
-        holder.binding.filmeData.text = items[position].filmeIMDB.dataLancamento.toString()
+        holder.binding.filmeTitulo.text = items[position].filme.nome
+        holder.binding.filmeAvaliacao.text = items[position].avalicao.toString()
+        holder.binding.filmeData.text = items[position].filme.dataLancamento.toString()
 
-        val imagemCartaz = holder.itemView.context.resources.getIdentifier(items[position].filmeIMDB.imagemCartaz, "drawable",  holder.itemView.context.packageName)
+        val imagemCartaz = holder.itemView.context.resources.getIdentifier(items[position].filme.imagemCartaz, "drawable",  holder.itemView.context.packageName)
         holder.binding.filmeImagem.setImageResource(imagemCartaz)
     }
 

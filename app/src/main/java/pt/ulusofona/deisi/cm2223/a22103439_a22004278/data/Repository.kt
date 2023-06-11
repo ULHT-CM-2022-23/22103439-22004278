@@ -1,5 +1,6 @@
 package pt.ulusofona.deisi.cm2223.a22103439_a22004278.data
 
+import android.annotation.SuppressLint
 import android.content.Context
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -9,17 +10,16 @@ import org.json.JSONObject
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.remote.ConnectivityUtil
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Avaliacao
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Cinema
-import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Operations
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Filme
+import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Operations
 import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
-import java.lang.IllegalStateException
 
-class Repository private constructor(val local: Operations, val remote: Operations, val context: Context): Operations() {
-    val inputStream: InputStream = context.assets.open("cinemas.json")
-    val inputStreamReader: InputStreamReader = InputStreamReader(inputStream)
-    val bufferedReader: BufferedReader = BufferedReader(inputStreamReader)
+class Repository private constructor(val local: Operations, private val remote: Operations, val context: Context): Operations() {
+    private val inputStream: InputStream = context.assets.open("cinemas.json")
+    private val inputStreamReader: InputStreamReader = InputStreamReader(inputStream)
+    private val bufferedReader: BufferedReader = BufferedReader(inputStreamReader)
 
     override fun clearAll(onFinished: () -> Unit) {
         throw Exception("Illegal operation")
@@ -45,10 +45,10 @@ class Repository private constructor(val local: Operations, val remote: Operatio
             val jsonString = stringBuilder.toString()
 
             val jsonObject = JSONObject(jsonString)
-            val jsonCinemaList = jsonObject["cinemas"] as JSONArray
+            val cinemaList = jsonObject["cinemas"] as JSONArray
             val cinemas = mutableListOf<Cinema>()
-            for (i in 0 until jsonCinemaList.length()) {
-                val cinema = jsonCinemaList[i] as JSONObject
+            for(i in 0 until cinemaList.length()) { // for(int i=0; i<cinemaList.length(); i++)
+                val cinema = cinemaList[i] as JSONObject
 
                 cinemas.add(
                     Cinema(
@@ -58,52 +58,68 @@ class Repository private constructor(val local: Operations, val remote: Operatio
                         )
                 )
             }
-
-            local.clearAll {  }
-            local.inserirCinemas(cinemas) {
-                onFinished(Result.success(cinemas))
+            local.clearAllCinemas {
+                local.inserirCinemas(cinemas) {
+                    onFinished(Result.success(cinemas))
+                }
             }
         }
     }
 
+    override fun getAllCinemas(onFinished: (Result<List<Cinema>>) -> Unit) {
+        local.getAllCinemas {
+            onFinished(it)
+        }
+    }
+
     override fun inserirCinemas(cinemas: List<Cinema>, onFinished: () -> Unit) {
-        TODO("Not yet implemented")
+        throw Exception("Illegal operation")
     }
 
     override fun clearAllCinemas(onFinished: () -> Unit) {
-        TODO("Not yet implemented")
+        local.clearAllCinemas {
+            onFinished()
+        }
     }
 
     override fun getCinemaByNome(nomeCinema: String, onFinished: (Result<Cinema>) -> Unit) {
-        TODO("Not yet implemented")
+        local.getCinemaByNome(nomeCinema) {
+            onFinished(it)
+        }
     }
 
     override fun getCinemaById(idCinema: Int, onFinished: (Result<Cinema>) -> Unit) {
-        TODO("Not yet implemented")
+        local.getCinemaById(idCinema) {
+            onFinished(it)
+        }
     }
 
     override fun getAvaliacao(id: String, onFinished: (Result<Avaliacao>) -> Unit) {
-        local.getAvaliacao(id) { result ->
-            val avaliacao = result.getOrNull()!!
-            onFinished(Result.success(avaliacao))
+        local.getAvaliacao(id) {
+            onFinished(it)
         }
     }
 
     override fun getAllAvaliacoes(onFinished: (Result<List<Avaliacao>>) -> Unit) {
-        local.getAllAvaliacoes() {
+        local.getAllAvaliacoes {
+            onFinished(it)
+        }
+    }
+
+    override fun getAvaliacaoByFilme(idFilme: String, onFinished: (Result<Avaliacao>) -> Unit) {
+        local.getAvaliacaoByFilme(idFilme) {
             onFinished(it)
         }
     }
 
     override fun getFilmeByName(nomeFilme: String, onFinished: (Result<Filme>) -> Unit) {
-        CoroutineScope(Dispatchers.IO).launch {
-            remote.getFilmeByName(nomeFilme){
-                onFinished(it)
-            }
+        remote.getFilmeByName(nomeFilme) {
+            onFinished(it)
         }
     }
 
     companion object {
+        @SuppressLint("StaticFieldLeak")
         private var instance: Repository? = null
 
         fun init(local: Operations, remote: Operations, context: Context) {

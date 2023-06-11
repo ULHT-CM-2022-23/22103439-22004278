@@ -49,7 +49,7 @@ class HistoryFragment : Fragment() {
     }
 
     private fun onOperationClick(avaliacao: Avaliacao) {
-        NavigationManager.goToOperationDetailFragment(parentFragmentManager, avaliacao.idUtilizador)
+        NavigationManager.goToOperationDetailFragment(parentFragmentManager, avaliacao.id)
     }
 
     private fun toggleRecyclerView() {

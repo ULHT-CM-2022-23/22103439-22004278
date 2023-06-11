@@ -11,6 +11,6 @@ data class AvaliacaoDB (
     @ColumnInfo(name = "avaliacao") val avaliacao: Int,
     @ColumnInfo(name = "data_visualizacao") val dataVisualizacao: Long,
     @ColumnInfo(name = "observacoes") val observacoes: String,
-    val idFilme: String,
-    val idCinema: Int
+    @ColumnInfo(name = "id_filme") val idFilme: String,
+    @ColumnInfo(name = "id_cinema") val idCinema: Int
 )

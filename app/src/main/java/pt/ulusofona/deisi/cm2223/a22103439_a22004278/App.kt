@@ -11,11 +11,11 @@ object App {
     val filmesIMDB = mutableListOf<Avaliacao>()
 
     fun listaOrdenadaPorAvaliacao() : List<Avaliacao> {
-        return filmesIMDB.sortedByDescending { it.avalicaoUtilizador }
+        return filmesIMDB.sortedByDescending { it.avalicao }
     }
 
     fun listaOrdenadaPorDataVisualizacao() : List<Avaliacao> {
-        return filmesIMDB.sortedByDescending { it.filmeIMDB.dataLancamento }
+        return filmesIMDB.sortedByDescending { it.filme.dataLancamento }
     }
 
     fun dataAbreviada(dataVisualizacao: Date):String {

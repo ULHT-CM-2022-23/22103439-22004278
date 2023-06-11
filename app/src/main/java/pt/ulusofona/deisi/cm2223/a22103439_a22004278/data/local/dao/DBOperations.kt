@@ -32,6 +32,9 @@ interface DBOperations {
     @Query("SELECT * FROM avaliacoes WHERE id = :id")
     fun getAvaliacaoById(id: String): AvaliacaoDB
 
+    @Query("SELECT * FROM avaliacoes WHERE id_filme = :idFilme")
+    fun getAvaliacaoByFilme(idFilme: String): AvaliacaoDB
+
     @Insert
     fun insertAvaliacao(filme: AvaliacaoDB)
 
@@ -46,8 +49,14 @@ interface DBOperations {
     fun getAllCinemas(): List<CinemaDB>
 
     @Query("SELECT * FROM cinemas WHERE id = :id")
-    fun getCinemaById(id: String): CinemaDB
+    fun getCinemaById(id: Int): CinemaDB
+
+    @Query("SELECT * FROM cinemas WHERE nome = :nome")
+    fun getCinemaByNome(nome: String): CinemaDB
 
     @Insert
     fun insertCinema(cinema: CinemaDB)
+
+    @Query("DELETE FROM cinemas")
+    fun deleteAllCinemas()
 }

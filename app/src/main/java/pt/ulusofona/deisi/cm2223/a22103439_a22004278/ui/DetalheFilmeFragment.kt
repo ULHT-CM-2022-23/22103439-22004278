@@ -31,7 +31,7 @@ class DetalheFilmeFragment : Fragment() {
         arguments?.let {operationUuid = it.getString(ARG_OPERATION_UUID)}
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val view = inflater.inflate(R.layout.fragment_detalhe_filme, container, false)
         binding = FragmentDetalheFilmeBinding.bind(view)
         return binding.root
@@ -48,21 +48,21 @@ class DetalheFilmeFragment : Fragment() {
                     CoroutineScope(Dispatchers.Main).launch {
                         binding.rvImagens.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                         //binding.rvImagens.adapter = ImagemDetalheAdapter(ui.getImages())
-                        binding.movieTitle.text =  avaliacao.filmeIMDB.nome
-                        binding.movieGenero.text = avaliacao.filmeIMDB.genero
-                        binding.movieRating.text = avaliacao.avalicaoUtilizador.toString()
-                        binding.movieAvaliacaoIMDB.text = avaliacao.filmeIMDB.avaliacao
-                        binding.movieDataLancamento.text = avaliacao.filmeIMDB.dataLancamento
-                        binding.movieSinopse.text = avaliacao.filmeIMDB.sinopse
-                        binding.movieCinema.text = avaliacao.cinemaJSON?.cinema_name
-                        binding.movieViewedDate.text = avaliacao.dataVisualizacaoUtilizador.toString()
-                        binding.movieDescicao.text = avaliacao.observacaoUtilizador
+                        binding.movieTitle.text =  avaliacao.filme.nome
+                        binding.movieGenero.text = avaliacao.filme.genero
+                        binding.movieRating.text = avaliacao.avalicao.toString()
+                        binding.movieAvaliacaoIMDB.text = avaliacao.filme.avaliacao
+                        binding.movieDataLancamento.text = avaliacao.filme.dataLancamento
+                        binding.movieSinopse.text = avaliacao.filme.sinopse
+                        binding.movieCinema.text = avaliacao.cinema.nome
+                        binding.movieViewedDate.text = avaliacao.dataVisualizacao.toString()
+                        binding.movieDescicao.text = avaliacao.observacao
                         binding.imdbButton.setOnClickListener{
-                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(avaliacao.filmeIMDB.link))
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(avaliacao.filme.link))
                             startActivity(intent)
                         }
 
-                        val imagemCartaz = context?.resources?.getIdentifier(avaliacao.filmeIMDB.imagemCartaz, "drawable",  context?.packageName)
+                        val imagemCartaz = context?.resources?.getIdentifier(avaliacao.filme.imagemCartaz, "drawable",  context?.packageName)
                         if (imagemCartaz != null) {
                             binding.posterImage.setImageResource(imagemCartaz)
                         }

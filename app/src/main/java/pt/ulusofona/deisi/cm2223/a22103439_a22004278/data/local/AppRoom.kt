@@ -27,12 +27,12 @@ class AppRoom(private val storage: DBOperations): Operations() {
             storage.insertFilme(filmeDB)
 
             val avaliacaoDB = AvaliacaoDB(
-                id = avaliacao.idUtilizador,
-                avaliacao = avaliacao.avalicaoUtilizador,
-                dataVisualizacao = avaliacao.dataVisualizacaoUtilizador.time.toLong(),
-                observacoes = avaliacao.observacaoUtilizador,
+                id = avaliacao.id,
+                avaliacao = avaliacao.avalicao,
+                dataVisualizacao = avaliacao.dataVisualizacao.time.toLong(),
+                observacoes = avaliacao.observacao,
                 idFilme = filme.id,
-                idCinema = avaliacao.cinemaJSON.cinema_id,
+                idCinema = avaliacao.cinema.id,
             )
             storage.insertAvaliacao(avaliacaoDB)
         }
@@ -65,17 +65,22 @@ class AppRoom(private val storage: DBOperations): Operations() {
     override fun getAvaliacao(id: String, onFinished: (Result<Avaliacao>) -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
             val avaliacaoDB = storage.getAvaliacaoById(id)
-
-            val it = storage.getFilmeById(avaliacaoDB.idFilme)
+            val filmeDB = storage.getFilmeById(avaliacaoDB.idFilme)
             val filme = Filme(
-                id = it.id,
-                nome = it.nome,
-                genero = it.genero,
-                sinopse = it.sinopse,
-                dataLancamento = it.dataLancamento,
-                avaliacao = it.avaliacao,
-                link = it.link,
-                imagemCartaz = it.imagemCartaz
+                id = filmeDB.id,
+                nome = filmeDB.nome,
+                genero = filmeDB.genero,
+                sinopse = filmeDB.sinopse,
+                dataLancamento = filmeDB.dataLancamento,
+                avaliacao = filmeDB.avaliacao,
+                link = filmeDB.link,
+                imagemCartaz = filmeDB.imagemCartaz
+            )
+
+            val cinemaDB = storage.getCinemaById(avaliacaoDB.idCinema)
+            val cinema = Cinema(
+                id = cinemaDB.id,
+                nome = cinemaDB.nome
             )
 
             val avaliacao = Avaliacao(
@@ -84,7 +89,7 @@ class AppRoom(private val storage: DBOperations): Operations() {
                 Date(avaliacaoDB.dataVisualizacao),
                 avaliacaoDB.observacoes,
                 filme,
-                Cinema(1,"Colombo")
+                cinema
             )
 
             onFinished(Result.success(avaliacao))
@@ -107,13 +112,20 @@ class AppRoom(private val storage: DBOperations): Operations() {
                     )
                 }
 
+                val cinema = storage.getCinemaById(it.idCinema).let {
+                    Cinema(
+                        id = it.id,
+                        nome = it.nome
+                    )
+                }
+
                 Avaliacao(
-                    idUtilizador = it.id,
-                    avalicaoUtilizador = it.avaliacao,
-                    dataVisualizacaoUtilizador = Date(it.dataVisualizacao),
-                    observacaoUtilizador = it.observacoes,
-                    filmeIMDB = filme,
-                    cinemaJSON = Cinema(1,"Vasco da Gama"),
+                    id = it.id,
+                    avalicao = it.avaliacao,
+                    dataVisualizacao = Date(it.dataVisualizacao),
+                    observacao = it.observacoes,
+                    filme = filme,
+                    cinema = cinema,
                 )
 
             }
@@ -121,17 +133,63 @@ class AppRoom(private val storage: DBOperations): Operations() {
         }
     }
 
+    override fun getAvaliacaoByFilme(idFilme: String, onFinished: (Result<Avaliacao>) -> Unit) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val avaliacaoDB = storage.getAvaliacaoByFilme(idFilme)
+            val filmeDB = storage.getFilmeById(avaliacaoDB.idFilme)
+            val filme = Filme(
+                id = filmeDB.id,
+                nome = filmeDB.nome,
+                genero = filmeDB.genero,
+                sinopse = filmeDB.sinopse,
+                dataLancamento = filmeDB.dataLancamento,
+                avaliacao = filmeDB.avaliacao,
+                link = filmeDB.link,
+                imagemCartaz = filmeDB.imagemCartaz
+            )
+
+            val cinemaDB = storage.getCinemaById(avaliacaoDB.idCinema)
+            val cinema = Cinema(
+                id = cinemaDB.id,
+                nome = cinemaDB.nome
+            )
+
+            val avaliacao = Avaliacao(
+                avaliacaoDB.id,
+                avaliacaoDB.avaliacao,
+                Date(avaliacaoDB.dataVisualizacao),
+                avaliacaoDB.observacoes,
+                filme,
+                cinema
+            )
+
+            onFinished(Result.success(avaliacao))
+        }
+    }
+
 
     override fun getCinemaJSON(onFinished: (Result<List<Cinema>>) -> Unit) {
-        TODO("Not yet implemented")
+        throw Exception("Illegal operation")
+    }
+
+    override fun getAllCinemas(onFinished: (Result<List<Cinema>>) -> Unit) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val cinemas = storage.getAllCinemas().map {
+                Cinema(
+                    id = it.id,
+                    nome = it.nome
+                )
+            }
+            onFinished(Result.success(cinemas))
+        }
     }
 
     override fun inserirCinemas(cinemas: List<Cinema>, onFinished: () -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
             cinemas.map {
                 CinemaDB(
-                    id = it.cinema_id,
-                    nome = it.cinema_name
+                    id = it.id,
+                    nome = it.nome
                 )
             }.forEach {
                 storage.insertCinema(it)
@@ -141,15 +199,32 @@ class AppRoom(private val storage: DBOperations): Operations() {
     }
 
     override fun clearAllCinemas(onFinished: () -> Unit) {
-        TODO("Not yet implemented")
+        CoroutineScope(Dispatchers.IO).launch {
+            storage.deleteAllCinemas()
+            onFinished()
+        }
     }
 
     override fun getCinemaByNome(nomeCinema: String, onFinished: (Result<Cinema>) -> Unit) {
-        TODO("Not yet implemented")
+        CoroutineScope(Dispatchers.IO).launch {
+            val cinemaDB = storage.getCinemaByNome(nomeCinema)
+            val cinema = Cinema(
+                id = cinemaDB.id,
+                nome = cinemaDB.nome
+            )
+            onFinished(Result.success(cinema))
+        }
     }
 
     override fun getCinemaById(idCinema: Int, onFinished: (Result<Cinema>) -> Unit) {
-        TODO("Not yet implemented")
+        CoroutineScope(Dispatchers.IO).launch {
+            val cinemaDB = storage.getCinemaById(idCinema)
+            val cinema = Cinema(
+                id = cinemaDB.id,
+                nome = cinemaDB.nome
+            )
+            onFinished(Result.success(cinema))
+        }
     }
 
 }

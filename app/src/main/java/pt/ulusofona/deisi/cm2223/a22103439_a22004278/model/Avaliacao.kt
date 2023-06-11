@@ -4,10 +4,10 @@ import java.io.Serializable
 import java.util.*
 
 class Avaliacao (
-    val idUtilizador: String,
-    val avalicaoUtilizador: Int,
-    val dataVisualizacaoUtilizador: Date,
-    val observacaoUtilizador: String,
-    val filmeIMDB: Filme,
-    val cinemaJSON: Cinema
+    val id: String,
+    val avalicao: Int,
+    val dataVisualizacao: Date,
+    val observacao: String,
+    val filme: Filme,
+    val cinema: Cinema
 ): Serializable

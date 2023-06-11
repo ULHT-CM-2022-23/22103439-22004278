@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import kotlinx.coroutines.CoroutineScope
@@ -40,28 +41,38 @@ class RegistarFilmeFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val view = inflater.inflate(R.layout.fragment_registar_filme, container, false)
         binding = FragmentRegistarFilmeBinding.bind(view)
         photosClickEvent()
+        model = Repository.getInstance()
+        val cinemas = mutableListOf<String>()
+        CoroutineScope(Dispatchers.IO).launch {
+            model.getAllCinemas {
+                if(it.isSuccess){
+                    it.onSuccess {
+                        it.forEach {
+                            cinemas.add(it.nome)
+                        }
+                    }
+                }
+            }
+        }
 
 /*        val adapterFilme = ArrayAdapter<String>(
             requireContext(),
             android.R.layout.simple_dropdown_item_1line,
             App.filmesIMDB.map { it.nome }
-        )
-
+        )*/
         val adapterCinema = ArrayAdapter<String>(
             requireContext(),
             android.R.layout.simple_dropdown_item_1line,
-            App.cinemas.map { it.cinema_name }
+            cinemas
         )
 
-        binding.nameEditText.setAdapter(adapterFilme)
+        //binding.nameEditText.setAdapter(adapterFilme)
 
-        binding.cinemaEditText.setAdapter(adapterCinema)*/
-
-        model = Repository.getInstance()
+        binding.cinemaEditText.setAdapter(adapterCinema)
 
         return binding.root
     }
@@ -76,44 +87,65 @@ class RegistarFilmeFragment : Fragment() {
             val nome : String = binding.nameEditText.text.toString()
             val cinema : String = binding.cinemaEditText.text.toString()
             val date : Date? = getDateFromDatePicker(binding.datePicker.text.toString())
+            val rating = binding.seekBar.progress + 1
 
             var preenchido = true
+            var verificado = false
 
             if (nome.isEmpty() || nome == ""){
-                binding.nameEditText.error = "Este campo é obrigatório"
+                binding.nameEditText.error = R.string.error_required_field.toString()
                 preenchido = false
-            }
-
-          /*  val filmeSelecionado = App.getFilmeByName(nome)
-            if (filmeSelecionado == null){
-                binding.nameEditText.error = "Este filme não existe"
-                preenchido = false
-            }else {
-                if (App.reviewExists(filmeSelecionado)) {
-                    binding.nameEditText.error = "A avaliação deste filme já está registada"
-                    preenchido = false
+            } else {
+                CoroutineScope(Dispatchers.IO).launch {
+                    model.getFilmeByName(nome){ itFilme ->
+                        if(itFilme.isSuccess){
+                            itFilme.onSuccess { filme ->
+                                model.getAvaliacaoByFilme(filme.id){ itAvaliacao ->
+                                    if(itAvaliacao.isSuccess){
+                                        itAvaliacao.onSuccess {
+                                            CoroutineScope(Dispatchers.Main).launch {
+                                                binding.nameEditText.error = R.string.error_movie_already_used.toString()
+                                                preenchido = false
+                                                verificado = true
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        } else if(itFilme.isFailure) {
+                            CoroutineScope(Dispatchers.Main).launch {
+                                binding.nameEditText.error = R.string.error_movie_doesnt_exist.toString()
+                                preenchido = false
+                                verificado = true
+                            }
+                        }
+                    }
                 }
-            }*/
+            }
 
             if (cinema.isEmpty() || cinema == ""){
-                binding.cinemaEditText.error = "Este campo é obrigatório"
+                binding.cinemaEditText.error = R.string.error_required_field.toString()
                 preenchido = false
+            } else {
+                CoroutineScope(Dispatchers.IO).launch {
+                    model.getCinemaByNome(cinema) {
+                        if(!it.isSuccess){
+                            CoroutineScope(Dispatchers.Main).launch {
+                                binding.cinemaEditText.error = R.string.error_cinema_doesnt_exist.toString()
+                                preenchido = false
+                                verificado = true
+                            }
+                        }
+                    }
+                }
             }
-
-/*
-            val cinemaSelecionado = App.getCinemaByName(cinema)
-            if (cinemaSelecionado == null){
-                binding.cinemaEditText.error = "Este cinema não existe"
-                preenchido = false
-            }
-*/
 
             if (date == null || date.after(Date()) || date == Date()) {
-                binding.datePicker.error = "A data está inválida"
+                binding.datePicker.error = R.string.error_invalid_date.toString()
                 preenchido = false
             }
 
-            if (preenchido) {
+            if (preenchido && verificado) {
 
                 showConfirmationDialog(
                     message = "Tem a certeza que quer registar o filme ${nome}?",
@@ -122,34 +154,26 @@ class RegistarFilmeFragment : Fragment() {
                         // Cria uma nova instância de Movie com os dados do formulário
 
                         CoroutineScope(Dispatchers.IO).launch {
-                            model.getFilmeByName(nome){
-                                if(it.isSuccess){
-                                    it.onSuccess {
-                                        val filme = Filme(
-                                            id = it.id,
-                                            nome = it.nome,
-                                            genero = it.genero,
-                                            sinopse = it.sinopse,
-                                            dataLancamento = it.dataLancamento,
-                                            avaliacao = it.avaliacao,
-                                            link = it.link,
-                                            imagemCartaz = it.imagemCartaz
-                                        )
+                            model.getFilmeByName(nome){ itFilme ->
+                                if(itFilme.isSuccess){
+                                    itFilme.onSuccess { filme ->
 
-
-                                        val avaliacao = Avaliacao(
-                                            UUID.randomUUID().toString(),
-                                            binding.seekBar.progress + 1,
-                                            date!!,
-                                            binding.notesEditText.text.toString(),
-                                            filme,
-                                            Cinema(1,"Colombo"),
-                                            // selectedImages, // Coloque aqui a lista de URIs para as fotos tiradas com a câmera, caso deseje implementar
-                                        )
-
-                                        model.inserirAvaliacao(filme,avaliacao){
+                                        model.getCinemaByNome(cinema) { itCinema ->
+                                            if (itCinema.isSuccess) {
+                                                itCinema.onSuccess { cinema ->
+                                                    val avaliacao = Avaliacao(
+                                                        UUID.randomUUID().toString(),
+                                                        rating,
+                                                        date!!,
+                                                        binding.notesEditText.text.toString(),
+                                                        filme,
+                                                        cinema,
+                                                        // selectedImages, // Coloque aqui a lista de URIs para as fotos tiradas com a câmera, caso deseje implementar
+                                                    )
+                                                    model.inserirAvaliacao(filme, avaliacao) {}
+                                                }
+                                            }
                                         }
-
                                     }
                                 }
                             }
