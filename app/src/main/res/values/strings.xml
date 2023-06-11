@@ -10,7 +10,7 @@
     <string name="textfield_filme">Nome do filme</string>
     <string name="textfield_cinema">Nome do cinema</string>
     <string name="title_registar">Registar nova avaliação</string>
-    <string name="field_avaliacao">Avaliação (1 a 10)</string>
+    <string name="field_avaliacao">Avaliação (1 a 10):</string>
     <string name="field_data">Selecione uma data (AAAA/MM/DD)</string>
     <string name="date_format" translatable="false">%1$04d/%2$02d/%3$02d</string>
     <string name="hint_notes">Observações (máximo de 200 caracteres)</string>
@@ -52,4 +52,11 @@
     <string name="dialog_title">MICROFONE</string>
     <string name="dialog_message">Contagem regressiva iniciada</string>
     <string name="dialog_left_time">Tempo restante:</string>
+    <string name="success_movie_registered">Avaliação registada</string>
+    <string name="_1">1</string>
+    <string name="_10">/10</string>
+    <string name="dash_mean">Média de Avaliações</string>
+    <string name="dash_registered">Avaliações Registradas</string>
+    <string name="seen_on">Visto em</string>
+    <string name="land_cinema">Cinema:</string>
 </resources>

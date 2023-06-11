@@ -26,6 +26,18 @@ class APIServiceWithOkHttpAndJSONObject(
         throw Exception("Illegal operation")
     }
 
+    override fun getTop5Avaliacoes(asc: Boolean, onFinished: (Result<List<Avaliacao>>) -> Unit) {
+        throw Exception("Illegal operation")
+    }
+
+    override fun getMediaAvaliacoes(onFinished: (Result<Float>) -> Unit) {
+        throw Exception("Illegal operation")
+    }
+
+    override fun getCountAvaliacoes(onFinished: (Result<Int>) -> Unit) {
+        throw Exception("Illegal operation")
+    }
+
     override fun getAvaliacaoByFilme(idFilme: String, onFinished: (Result<Avaliacao>) -> Unit) {
         throw Exception("Illegal operation")
     }
@@ -48,29 +60,19 @@ class APIServiceWithOkHttpAndJSONObject(
                         val body = response.body?.string()
                         if (body != null) {
                             val jsonObject = JSONObject(body)
-
                             if (jsonObject.getString("Response") == "False") {
                                 onFinished(Result.failure(IOException("Movie not found")))
                             } else {
-                                val imdbID = jsonObject.getString("imdbID")
-                                val title = jsonObject.getString("Title")
-                                val genre = jsonObject.getString("Genre")
-                                val plot = jsonObject.getString("Plot")
-                                val released = jsonObject.getString("Released")
-                                val imdbRating = jsonObject.getString("imdbRating")
-                                val poster = jsonObject.getString("Poster")
-
                                 val filme = Filme(
-                                    imdbID,
-                                    title,
-                                    genre,
-                                    plot,
-                                    released,
-                                    imdbRating,
-                                    poster,
-                                    poster
+                                    jsonObject.getString("imdbID"),
+                                    jsonObject.getString("Title"),
+                                    jsonObject.getString("Genre"),
+                                    jsonObject.getString("Plot"),
+                                    jsonObject.getString("Released"),
+                                    jsonObject.getString("imdbRating"),
+                                    "https://www.imdb.com/title/" + jsonObject.getString("imdbID"),
+                                    jsonObject.getString("Poster")
                                 )
-
                                 onFinished(Result.success(filme))
                             }
                         }

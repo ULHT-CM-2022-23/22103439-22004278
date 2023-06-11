@@ -17,9 +17,6 @@ import java.io.InputStream
 import java.io.InputStreamReader
 
 class Repository private constructor(val local: Operations, private val remote: Operations, val context: Context): Operations() {
-    private val inputStream: InputStream = context.assets.open("cinemas.json")
-    private val inputStreamReader: InputStreamReader = InputStreamReader(inputStream)
-    private val bufferedReader: BufferedReader = BufferedReader(inputStreamReader)
 
     override fun clearAll(onFinished: () -> Unit) {
         throw Exception("Illegal operation")
@@ -34,6 +31,9 @@ class Repository private constructor(val local: Operations, private val remote: 
     }
 
     override fun getCinemaJSON(onFinished: (Result<List<Cinema>>) -> Unit) {
+        val inputStream: InputStream = context.assets.open("cinemas.json")
+        val inputStreamReader = InputStreamReader(inputStream)
+        val bufferedReader = BufferedReader(inputStreamReader)
         CoroutineScope(Dispatchers.IO).launch {
 
             val stringBuilder = StringBuilder()
@@ -49,7 +49,6 @@ class Repository private constructor(val local: Operations, private val remote: 
             val cinemas = mutableListOf<Cinema>()
             for(i in 0 until cinemaList.length()) { // for(int i=0; i<cinemaList.length(); i++)
                 val cinema = cinemaList[i] as JSONObject
-
                 cinemas.add(
                     Cinema(
                         cinema["cinema_id"].toString().toInt(),
@@ -102,6 +101,24 @@ class Repository private constructor(val local: Operations, private val remote: 
 
     override fun getAllAvaliacoes(onFinished: (Result<List<Avaliacao>>) -> Unit) {
         local.getAllAvaliacoes {
+            onFinished(it)
+        }
+    }
+
+    override fun getTop5Avaliacoes(asc: Boolean, onFinished: (Result<List<Avaliacao>>) -> Unit) {
+        local.getTop5Avaliacoes(asc) {
+            onFinished(it)
+        }
+    }
+
+    override fun getMediaAvaliacoes(onFinished: (Result<Float>) -> Unit) {
+        local.getMediaAvaliacoes {
+            onFinished(it)
+        }
+    }
+
+    override fun getCountAvaliacoes(onFinished: (Result<Int>) -> Unit) {
+        local.getCountAvaliacoes {
             onFinished(it)
         }
     }

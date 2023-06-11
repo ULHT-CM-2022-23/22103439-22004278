@@ -48,7 +48,7 @@ class AppRoom(private val storage: DBOperations): Operations() {
                     sinopse = it.sinopse,
                     dataLancamento = it.dataLancamento,
                     avaliacao = it.avaliacao,
-                    link = it.link,
+                    link = "https://www.imdb.com/title/" + it.id,
                     imagemCartaz = it.imagemCartaz
                 )
             onFinished(Result.success(filme))
@@ -133,37 +133,98 @@ class AppRoom(private val storage: DBOperations): Operations() {
         }
     }
 
+    override fun getTop5Avaliacoes(asc: Boolean, onFinished: (Result<List<Avaliacao>>) -> Unit) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val avaliacoesDB = if(asc) {
+                storage.getTop5AvaliacoesAsc()
+            } else {
+                storage.getTop5AvaliacoesDesc()
+            }
+            val avaliacoes : MutableList<Avaliacao> = mutableListOf()
+            avaliacoesDB.map {
+                val filmeDB = storage.getFilmeById(it.idFilme)
+                val filme = Filme(
+                    id = filmeDB.id,
+                    nome = filmeDB.nome,
+                    genero = filmeDB.genero,
+                    sinopse = filmeDB.sinopse,
+                    dataLancamento = filmeDB.dataLancamento,
+                    avaliacao = filmeDB.avaliacao,
+                    link = filmeDB.link,
+                    imagemCartaz = filmeDB.imagemCartaz
+                )
+
+                val cinemaDB = storage.getCinemaById(it.idCinema)
+                val cinema = Cinema(
+                    id = cinemaDB.id,
+                    nome = cinemaDB.nome
+                )
+
+                val avaliacao = Avaliacao(
+                    it.id,
+                    it.avaliacao,
+                    Date(it.dataVisualizacao),
+                    it.observacoes,
+                    filme,
+                    cinema
+                )
+
+                avaliacoes.add(avaliacao)
+            }
+
+            onFinished(Result.success(avaliacoes))
+        }
+    }
+
+    override fun getMediaAvaliacoes(onFinished: (Result<Float>) -> Unit) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val media = storage.getMediaAvaliacoes()
+            onFinished(Result.success(media))
+        }
+    }
+
+    override fun getCountAvaliacoes(onFinished: (Result<Int>) -> Unit) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val count = storage.getCountAvaliacoes()
+            onFinished(Result.success(count))
+        }
+    }
+
     override fun getAvaliacaoByFilme(idFilme: String, onFinished: (Result<Avaliacao>) -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
             val avaliacaoDB = storage.getAvaliacaoByFilme(idFilme)
-            val filmeDB = storage.getFilmeById(avaliacaoDB.idFilme)
-            val filme = Filme(
-                id = filmeDB.id,
-                nome = filmeDB.nome,
-                genero = filmeDB.genero,
-                sinopse = filmeDB.sinopse,
-                dataLancamento = filmeDB.dataLancamento,
-                avaliacao = filmeDB.avaliacao,
-                link = filmeDB.link,
-                imagemCartaz = filmeDB.imagemCartaz
-            )
+            if (avaliacaoDB == null) {
+                onFinished(Result.failure(Exception("Avaliação not found")))
+            } else {
+                val filmeDB = storage.getFilmeById(avaliacaoDB.idFilme)
+                val filme = Filme(
+                    id = filmeDB.id,
+                    nome = filmeDB.nome,
+                    genero = filmeDB.genero,
+                    sinopse = filmeDB.sinopse,
+                    dataLancamento = filmeDB.dataLancamento,
+                    avaliacao = filmeDB.avaliacao,
+                    link = filmeDB.link,
+                    imagemCartaz = filmeDB.imagemCartaz
+                )
 
-            val cinemaDB = storage.getCinemaById(avaliacaoDB.idCinema)
-            val cinema = Cinema(
-                id = cinemaDB.id,
-                nome = cinemaDB.nome
-            )
+                val cinemaDB = storage.getCinemaById(avaliacaoDB.idCinema)
+                val cinema = Cinema(
+                    id = cinemaDB.id,
+                    nome = cinemaDB.nome
+                )
 
-            val avaliacao = Avaliacao(
-                avaliacaoDB.id,
-                avaliacaoDB.avaliacao,
-                Date(avaliacaoDB.dataVisualizacao),
-                avaliacaoDB.observacoes,
-                filme,
-                cinema
-            )
+                val avaliacao = Avaliacao(
+                    avaliacaoDB.id,
+                    avaliacaoDB.avaliacao,
+                    Date(avaliacaoDB.dataVisualizacao),
+                    avaliacaoDB.observacoes,
+                    filme,
+                    cinema
+                )
 
-            onFinished(Result.success(avaliacao))
+                onFinished(Result.success(avaliacao))
+            }
         }
     }
 
@@ -208,11 +269,15 @@ class AppRoom(private val storage: DBOperations): Operations() {
     override fun getCinemaByNome(nomeCinema: String, onFinished: (Result<Cinema>) -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
             val cinemaDB = storage.getCinemaByNome(nomeCinema)
-            val cinema = Cinema(
-                id = cinemaDB.id,
-                nome = cinemaDB.nome
-            )
-            onFinished(Result.success(cinema))
+            if (cinemaDB == null) {
+                onFinished(Result.failure(Exception("Cinema not found")))
+            } else {
+                val cinema = Cinema(
+                    id = cinemaDB.id,
+                    nome = cinemaDB.nome
+                )
+                onFinished(Result.success(cinema))
+            }
         }
     }
 

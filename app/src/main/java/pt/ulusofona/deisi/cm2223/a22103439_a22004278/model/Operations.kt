@@ -6,6 +6,9 @@ abstract class Operations {
 
     abstract fun getAvaliacao(id: String, onFinished: (Result<Avaliacao>) -> Unit)
     abstract fun getAllAvaliacoes(onFinished: (Result <List<Avaliacao>>) -> Unit)
+    abstract fun getTop5Avaliacoes(asc: Boolean, onFinished: (Result <List<Avaliacao>>) -> Unit)
+    abstract fun getMediaAvaliacoes(onFinished: (Result <Float>) -> Unit)
+    abstract fun getCountAvaliacoes(onFinished: (Result <Int>) -> Unit)
     abstract fun getAvaliacaoByFilme(idFilme: String, onFinished: (Result <Avaliacao>) -> Unit)
     abstract fun inserirAvaliacao(filme: Filme, avaliacao: Avaliacao, onFinished: (Result<Filme>) -> Unit)
 

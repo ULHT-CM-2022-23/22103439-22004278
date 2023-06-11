@@ -1,114 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp">
 
-        <!-- Vai criar 10 espaços -->
+        <!-- Imagem do Filme -->
+        <ImageView
+            android:id="@+id/filme_imagem"
+            android:layout_width="100dp"
+            android:layout_height="150dp" />
+
+        <!-- Detalhes do Filme -->
         <LinearLayout
-            android:weightSum="5"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal" >
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp">
 
-            <!-- Atribuir 8 dos 10 espaços -->
-            <!-- O teclado tem 4 linhas -->
+            <TextView
+                android:id="@+id/filme_titulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/movie_title"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:paddingTop="5dp"/>
+
+            <TextView
+                android:id="@+id/filme_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/launch_date"
+                android:textSize="18sp"/>
+
+            <!-- Detalhes do Filme -->
+
+
             <LinearLayout
-                android:layout_width="171dp"
-                android:layout_height="match_parent"
-                android:layout_weight="4"
-                android:orientation="vertical"
-                android:weightSum="2">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="0dp"
+                android:paddingTop="10dp">
 
-                <!-- Vai criar 4 espaços -->
-                <LinearLayout
+                <TextView
+                    android:id="@+id/filme_avaliacao"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/default_rating"
+                    android:textSize="20sp" />
+
+                <ImageView
+                    android:id="@+id/estrela"
+                    android:layout_width="34dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_star"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/seen_on"
+                    android:textSize="18sp"
+                    android:paddingEnd="3dp"/>
+
+                <TextView
+                    android:id="@+id/eval_data"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:weightSum="1"
-                    tools:ignore="NestedWeights">
+                    android:layout_height="wrap_content"
+                    android:text="@string/seen_date"
+                    android:textSize="18sp"
+                    android:paddingVertical="5dp"/>
 
-                    <!-- Atribui 1 dos 4 espaços -->
-                    <TextView
-                        android:id="@+id/text_expression"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:paddingHorizontal="16dp"
-                        android:text="@string/movie_title"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        tools:ignore="NestedWeights" />
+            </LinearLayout>
 
-                </LinearLayout>
+        </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:weightSum="1">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp">
 
-                    <!-- Atribui 1 dos 4 espaços -->
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingHorizontal="16dp"
-                        android:text="@string/movie_eval"
-                        android:textSize="16sp"
-                        android:textStyle="bold"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="0dp"
+                android:paddingVertical="10dp">
 
-                    <TextView
-                        android:id="@+id/text_result"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/movie_eval"
-                        android:textSize="16sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/land_cinema"
+                    android:textSize="20sp"
+                    android:paddingEnd="3dp"/>
 
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/cinema_visto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp" />
 
             </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:paddingHorizontal="16dp"
+                android:layout_height="wrap_content"
                 android:text="@string/movie_observ"
-                android:textSize="16sp"
-                android:textStyle="bold"/>
+                android:textSize="18sp"
+                android:paddingEnd="3dp"/>
 
             <TextView
-                android:id="@+id/text_obs"
-                android:layout_width="530dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:paddingHorizontal="16dp"
-                android:text="@string/movie_observ"
-                android:textSize="16sp" />
+                android:id="@+id/eval_observ"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:paddingVertical="5dp"/>
 
         </LinearLayout>
 
     </LinearLayout>
 
-    <LinearLayout
-        android:orientation="vertical"
+    <View
         android:layout_width="match_parent"
-        android:layout_height="-2dp">
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"
-            android:layout_marginVertical="10dp"/>
-
-    </LinearLayout>
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_marginVertical="10dp"/>
 
 </LinearLayout>

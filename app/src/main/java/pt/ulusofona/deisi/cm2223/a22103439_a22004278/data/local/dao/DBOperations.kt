@@ -35,11 +35,23 @@ interface DBOperations {
     @Query("SELECT * FROM avaliacoes WHERE id_filme = :idFilme")
     fun getAvaliacaoByFilme(idFilme: String): AvaliacaoDB
 
+    @Query("SELECT * FROM avaliacoes ORDER BY avaliacao DESC LIMIT 5")
+    fun getTop5AvaliacoesDesc(): List<AvaliacaoDB>
+
+    @Query("SELECT AVG(avaliacao) FROM avaliacoes")
+    fun getMediaAvaliacoes(): Float
+
+    @Query("SELECT COUNT(id) FROM avaliacoes")
+    fun getCountAvaliacoes(): Int
+
+    @Query("SELECT * FROM avaliacoes ORDER BY avaliacao ASC LIMIT 5")
+    fun getTop5AvaliacoesAsc(): List<AvaliacaoDB>
+
     @Insert
     fun insertAvaliacao(filme: AvaliacaoDB)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAllAvaliacoes(characters: List<AvaliacaoDB>)
+    fun insertAllAvaliacoes(avaliacoes: List<AvaliacaoDB>)
 
     @Query("DELETE FROM avaliacoes")
     fun deleteAllAvaliacoes()

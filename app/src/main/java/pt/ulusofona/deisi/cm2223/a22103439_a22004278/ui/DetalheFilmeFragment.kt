@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,6 +17,8 @@ import pt.ulusofona.deisi.cm2223.a22103439_a22004278.R
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.Repository
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.databinding.FragmentDetalheFilmeBinding
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Avaliacao
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 private const val ARG_OPERATION_UUID = "ARG_OPERATION_UUID"
@@ -40,6 +43,7 @@ class DetalheFilmeFragment : Fragment() {
     @SuppressLint("SuspiciousIndentation")
     override fun onStart() {
         super.onStart()
+        val dateFromat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
         operationUuid?.let { uuid ->
             CoroutineScope(Dispatchers.IO).launch {
                 var avaliacao : Avaliacao
@@ -55,20 +59,18 @@ class DetalheFilmeFragment : Fragment() {
                         binding.movieDataLancamento.text = avaliacao.filme.dataLancamento
                         binding.movieSinopse.text = avaliacao.filme.sinopse
                         binding.movieCinema.text = avaliacao.cinema.nome
-                        binding.movieViewedDate.text = avaliacao.dataVisualizacao.toString()
+                        binding.movieViewedDate.text = dateFromat.format(avaliacao.dataVisualizacao)
                         binding.movieDescicao.text = avaliacao.observacao
                         binding.imdbButton.setOnClickListener{
                             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(avaliacao.filme.link))
                             startActivity(intent)
                         }
 
-                        val imagemCartaz = context?.resources?.getIdentifier(avaliacao.filme.imagemCartaz, "drawable",  context?.packageName)
-                        if (imagemCartaz != null) {
-                            binding.posterImage.setImageResource(imagemCartaz)
-                        }
+                        Glide.with(requireContext())
+                            .load(avaliacao.filme.imagemCartaz)
+                            .into(binding.posterImage)
                     }
                 }
-
             }
         }
     }
