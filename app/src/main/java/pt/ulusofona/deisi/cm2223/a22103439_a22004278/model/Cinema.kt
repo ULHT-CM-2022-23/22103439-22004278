@@ -5,5 +5,9 @@ import java.io.Serializable
 class Cinema(
     val id: Int,
     val nome: String,
+    val latitude: Double,
+    val longitude: Double,
+    val morada: String,
+    val localidade: String
 ): Serializable
 

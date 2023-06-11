@@ -53,7 +53,10 @@ class Repository private constructor(val local: Operations, private val remote: 
                     Cinema(
                         cinema["cinema_id"].toString().toInt(),
                         cinema["cinema_name"].toString(),
-
+                        cinema["latitude"].toString().toDouble(),
+                        cinema["longitude"].toString().toDouble(),
+                        cinema["address"].toString(),
+                        cinema["county"].toString()
                         )
                 )
             }

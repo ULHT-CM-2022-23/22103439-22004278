@@ -28,4 +28,9 @@ object  NavigationManager {
         placeFragment(fm, DashboardFragment())
     }
 
+    fun goToMapFragment(fm: FragmentManager) {
+        placeFragment(fm, MapFragment())
+    }
+
+
 }

@@ -80,7 +80,11 @@ class AppRoom(private val storage: DBOperations): Operations() {
             val cinemaDB = storage.getCinemaById(avaliacaoDB.idCinema)
             val cinema = Cinema(
                 id = cinemaDB.id,
-                nome = cinemaDB.nome
+                nome = cinemaDB.nome,
+                latitude = cinemaDB.latitude,
+                longitude = cinemaDB.longitude,
+                morada = cinemaDB.morada,
+                localidade = cinemaDB.localidade
             )
 
             val avaliacao = Avaliacao(
@@ -115,7 +119,11 @@ class AppRoom(private val storage: DBOperations): Operations() {
                 val cinema = storage.getCinemaById(it.idCinema).let {
                     Cinema(
                         id = it.id,
-                        nome = it.nome
+                        nome = it.nome,
+                        latitude = it.latitude,
+                        longitude = it.longitude,
+                        morada = it.morada,
+                        localidade = it.localidade
                     )
                 }
 
@@ -157,7 +165,11 @@ class AppRoom(private val storage: DBOperations): Operations() {
                 val cinemaDB = storage.getCinemaById(it.idCinema)
                 val cinema = Cinema(
                     id = cinemaDB.id,
-                    nome = cinemaDB.nome
+                    nome = cinemaDB.nome,
+                    latitude = cinemaDB.latitude,
+                    longitude = cinemaDB.longitude,
+                    morada = cinemaDB.morada,
+                    localidade = cinemaDB.localidade
                 )
 
                 val avaliacao = Avaliacao(
@@ -211,7 +223,11 @@ class AppRoom(private val storage: DBOperations): Operations() {
                 val cinemaDB = storage.getCinemaById(avaliacaoDB.idCinema)
                 val cinema = Cinema(
                     id = cinemaDB.id,
-                    nome = cinemaDB.nome
+                    nome = cinemaDB.nome,
+                    latitude = cinemaDB.latitude,
+                    longitude = cinemaDB.longitude,
+                    morada = cinemaDB.morada,
+                    localidade = cinemaDB.localidade
                 )
 
                 val avaliacao = Avaliacao(
@@ -238,7 +254,11 @@ class AppRoom(private val storage: DBOperations): Operations() {
             val cinemas = storage.getAllCinemas().map {
                 Cinema(
                     id = it.id,
-                    nome = it.nome
+                    nome = it.nome,
+                    latitude = it.latitude,
+                    longitude = it.longitude,
+                    morada = it.morada,
+                    localidade = it.localidade
                 )
             }
             onFinished(Result.success(cinemas))
@@ -250,7 +270,11 @@ class AppRoom(private val storage: DBOperations): Operations() {
             cinemas.map {
                 CinemaDB(
                     id = it.id,
-                    nome = it.nome
+                    nome = it.nome,
+                    latitude = it.latitude,
+                    longitude = it.longitude,
+                    morada = it.morada,
+                    localidade = it.localidade
                 )
             }.forEach {
                 storage.insertCinema(it)
@@ -274,7 +298,11 @@ class AppRoom(private val storage: DBOperations): Operations() {
             } else {
                 val cinema = Cinema(
                     id = cinemaDB.id,
-                    nome = cinemaDB.nome
+                    nome = cinemaDB.nome,
+                    latitude = cinemaDB.latitude,
+                    longitude = cinemaDB.longitude,
+                    morada = cinemaDB.morada,
+                    localidade = cinemaDB.localidade
                 )
                 onFinished(Result.success(cinema))
             }
@@ -286,7 +314,11 @@ class AppRoom(private val storage: DBOperations): Operations() {
             val cinemaDB = storage.getCinemaById(idCinema)
             val cinema = Cinema(
                 id = cinemaDB.id,
-                nome = cinemaDB.nome
+                nome = cinemaDB.nome,
+                latitude = cinemaDB.latitude,
+                longitude = cinemaDB.longitude,
+                morada = cinemaDB.morada,
+                localidade = cinemaDB.localidade
             )
             onFinished(Result.success(cinema))
         }

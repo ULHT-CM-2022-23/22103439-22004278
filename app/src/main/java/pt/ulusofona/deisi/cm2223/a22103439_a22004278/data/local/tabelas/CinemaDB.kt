@@ -9,4 +9,8 @@ data class CinemaDB(
     @PrimaryKey
     @ColumnInfo(name = "id") val id: Int,
     @ColumnInfo(name = "nome") val nome: String,
+    @ColumnInfo(name = "latitude") val latitude: Double,
+    @ColumnInfo(name = "longitude") val longitude: Double,
+    @ColumnInfo(name = "morada") val morada: String,
+    @ColumnInfo(name = "localidade") val localidade: String
 )

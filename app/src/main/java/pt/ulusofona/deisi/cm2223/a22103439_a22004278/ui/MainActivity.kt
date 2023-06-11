@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
+import com.fondesa.kpermissions.extension.permissionsBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -15,6 +16,11 @@ import pt.ulusofona.deisi.cm2223.a22103439_a22004278.R
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.Repository
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.databinding.ActivityMainBinding
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Operations
+
+import android.Manifest
+import com.fondesa.kpermissions.allGranted
+import com.fondesa.kpermissions.extension.permissionsBuilder
+import com.fondesa.kpermissions.extension.send
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -29,7 +35,20 @@ class MainActivity : AppCompatActivity() {
         if(!screenRotated(savedInstanceState)) {
             NavigationManager.goToDashboardFragment(supportFragmentManager)
         }
-
+        // Só vamos abrir a aplicação se aceitar as permissões da localização
+        permissionsBuilder(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION).build().send { result ->
+            if (result.allGranted()) {
+                // Este if já cá estava antes, para garantir que ficamos no
+                // ecrã em caso de ocorrer uma rotação
+                if(!screenRotated(savedInstanceState)) {
+                    NavigationManager.goToDashboardFragment(supportFragmentManager)
+                }
+            } else {
+                finish()
+            }
+        }
     }
 
     override fun onStart() {
@@ -78,6 +97,10 @@ class MainActivity : AppCompatActivity() {
                 NavigationManager.goToDashboardFragment(
                     supportFragmentManager
                 )
+
+            R.id.nav_map ->
+                NavigationManager.goToMapFragment(supportFragmentManager)
+
         }
         binding.drawer.closeDrawer(GravityCompat.START)
         return true

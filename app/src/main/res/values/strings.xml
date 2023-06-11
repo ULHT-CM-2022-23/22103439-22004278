@@ -59,4 +59,7 @@
     <string name="dash_registered">Avaliações Registradas</string>
     <string name="seen_on">Visto em</string>
     <string name="land_cinema">Cinema:</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="map">map</string>
 </resources>
