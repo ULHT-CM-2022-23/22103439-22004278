@@ -25,8 +25,7 @@ class HistoryFragment : Fragment() {
             View? {
                 val view = inflater.inflate(R.layout.fragment_history, container, false)
                 binding = FragmentHistoryBinding.bind(view)
-                binding.btnRecycler.setOnClickListener { toggleRecyclerView() }
-                binding.btnImage.setOnClickListener { toggleImage() }
+                binding.btnImage.setOnClickListener { NavigationManager.goToMapFragment(parentFragmentManager) }
 
                 return binding.root
              }
@@ -52,21 +51,4 @@ class HistoryFragment : Fragment() {
         NavigationManager.goToOperationDetailFragment(parentFragmentManager, avaliacao.id)
     }
 
-    private fun toggleRecyclerView() {
-        if (binding.rvHistory.visibility == View.VISIBLE) {
-            binding.rvHistory.visibility = View.GONE
-        } else {
-            binding.rvHistory.visibility = View.VISIBLE
-            binding.imageView.visibility = View.GONE
-        }
-    }
-
-    private fun toggleImage() {
-        if (binding.imageView.visibility == View.VISIBLE) {
-            binding.imageView.visibility = View.GONE
-        } else {
-            binding.imageView.visibility = View.VISIBLE
-            binding.rvHistory.visibility = View.GONE
-        }
-    }
 }
