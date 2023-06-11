@@ -70,7 +70,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    >
+                    android:paddingVertical="5dp">
 
                     <TextView
                         android:id="@+id/movie_rating"
@@ -108,7 +108,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:textAppearanceSmall"
-                        android:text="@string/imdb_eval"
                         android:textStyle="bold"/>
 
                 </LinearLayout>
@@ -131,12 +130,21 @@
             android:orientation="vertical"
             android:padding="16dp">
 
+            <!-- Elemento de UI para a sinopse -->
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/extra_info"
-                android:textAppearance="?android:textAppearanceLarge"
-                android:textStyle="bold" />
+                android:textAppearance="?android:textAppearanceMedium"
+                android:text="@string/languages"
+                android:textStyle="italic"
+                android:layout_marginTop="10dp" />
+
+            <TextView
+                android:id="@+id/movie_languages"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:textAppearanceSmall"
+                android:text="@string/languages"/>
 
             <!-- Elemento de UI para a sinopse -->
             <TextView
@@ -152,7 +160,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:textAppearanceSmall"
-                android:text="@string/sinopse" />
+                android:text="@string/sinopse"
+                android:layout_marginBottom="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/extra_info"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:textStyle="bold" />
 
             <!-- Elemento de UI para a nome cinema -->
             <TextView
@@ -167,10 +183,157 @@
                 android:id="@+id/movie_cinema"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="@string/cinema"
+                android:textStyle="bold"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/movie_cinema_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:textAppearanceSmall"
+                    android:text="@string/cinema" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=", "
+                    android:textAppearance="?android:textAppearanceSmall" />
+
+                <TextView
+                    android:id="@+id/movie_cinema_county"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:textAppearanceSmall"
+                    android:text="@string/cinema" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:textAppearance="?android:textAppearanceSmall"
-                android:text="@string/cinema" />
+                android:text="@string/cinema_eval"
+                android:layout_marginVertical="5dp"/>
 
             <!-- Elemento de UI para a data em que o filme foi visto -->
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stretchColumns="*">
+
+                <TableRow>
+                    <TextView
+                        android:id="@+id/cinema_rating_cat1"
+                        android:padding="8dp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_gravity="center_vertical">
+
+                        <TextView
+                            android:id="@+id/cinema_rating_cat1_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:textAppearanceSmall" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/_10"
+                            android:textAppearance="?android:textAppearanceSmall" />
+                    </LinearLayout>
+
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:id="@+id/cinema_rating_cat2"
+                        android:padding="8dp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_gravity="center_vertical">
+
+                        <TextView
+                            android:id="@+id/cinema_rating_cat2_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:textAppearanceSmall" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/_10"
+                            android:textAppearance="?android:textAppearanceSmall" />
+                    </LinearLayout>
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:id="@+id/cinema_rating_cat3"
+                        android:padding="8dp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_gravity="center_vertical">
+
+                        <TextView
+                            android:id="@+id/cinema_rating_cat3_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:textAppearanceSmall" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/_10"
+                            android:textAppearance="?android:textAppearanceSmall" />
+                    </LinearLayout>
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:id="@+id/cinema_rating_cat4"
+                        android:padding="8dp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_gravity="center_vertical">
+
+                        <TextView
+                            android:id="@+id/cinema_rating_cat4_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:textAppearanceSmall" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/_10"
+                            android:textAppearance="?android:textAppearanceSmall" />
+                    </LinearLayout>
+                </TableRow>
+
+            </TableLayout>
+
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -26,6 +26,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.R
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.Repository
+import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.remote.ConnectivityUtil
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.databinding.FragmentRegistarFilmeBinding
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Avaliacao
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Operations
@@ -83,7 +84,14 @@ class RegistarFilmeFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        //listaDados = App
+        if (!ConnectivityUtil.isOnline(requireContext())) {
+            Toast.makeText(
+                requireContext(),
+                R.string.error_internet_connection,
+                Toast.LENGTH_LONG
+            ).show()
+            binding.saveButton.isEnabled = false
+        }
 
         // Configuração do botão de guardar
         binding.saveButton.setOnClickListener {

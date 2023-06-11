@@ -16,6 +16,7 @@ abstract class Operations {
     abstract fun getAllCinemas(onFinished: (Result <List<Cinema>>) -> Unit)
     abstract fun getCinemaByNome(nomeCinema: String, onFinished: (Result<Cinema>) -> Unit)
     abstract fun getCinemaById(idCinema: Int, onFinished: (Result<Cinema>) -> Unit)
-    abstract fun inserirCinemas(cinemas: List<Cinema>, onFinished: () -> Unit)
+    abstract fun getCinemaRating(idCinema: Int, onFinished: (Result<List<CinemaRating>>) -> Unit)
+    abstract fun inserirCinemas(cinemas: List<Cinema>, ratings: List<CinemaRating>, onFinished: () -> Unit)
     abstract fun clearAllCinemas(onFinished: () -> Unit)
 }

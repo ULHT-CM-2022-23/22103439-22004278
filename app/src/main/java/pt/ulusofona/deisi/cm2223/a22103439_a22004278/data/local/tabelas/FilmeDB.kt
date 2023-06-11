@@ -15,4 +15,5 @@ data class FilmeDB (
     @ColumnInfo(name = "avaliacao") val avaliacao: String,
     @ColumnInfo(name = "link") val link: String,
     @ColumnInfo(name = "imagem_cartaz") val imagemCartaz: String,
+    @ColumnInfo(name = "idiomas") val idiomas: String
 )

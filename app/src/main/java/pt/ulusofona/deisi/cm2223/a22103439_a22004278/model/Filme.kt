@@ -11,4 +11,5 @@ data class Filme(
     val avaliacao: String,
     val link: String,
     val imagemCartaz: String,
+    val idiomas: String
 ) : Serializable

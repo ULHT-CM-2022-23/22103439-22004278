@@ -51,16 +51,18 @@ class DetalheFilmeFragment : Fragment() {
                     avaliacao = it.getOrNull()!!
                     CoroutineScope(Dispatchers.Main).launch {
                         binding.rvImagens.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-                        //binding.rvImagens.adapter = ImagemDetalheAdapter(ui.getImages())
                         binding.movieTitle.text =  avaliacao.filme.nome
                         binding.movieGenero.text = avaliacao.filme.genero
                         binding.movieRating.text = avaliacao.avalicao.toString()
                         binding.movieAvaliacaoIMDB.text = avaliacao.filme.avaliacao
                         binding.movieDataLancamento.text = avaliacao.filme.dataLancamento
                         binding.movieSinopse.text = avaliacao.filme.sinopse
+                        binding.movieLanguages.text = avaliacao.filme.idiomas
                         binding.movieCinema.text = avaliacao.cinema.nome
+                        binding.movieCinemaAddress.text = avaliacao.cinema.morada
+                        binding.movieCinemaCounty.text = avaliacao.cinema.localidade
                         binding.movieViewedDate.text = dateFromat.format(avaliacao.dataVisualizacao)
-                        binding.movieDescicao.text = avaliacao.observacao
+                        binding.movieDescicao.text = if(avaliacao.observacao == "") "N/A" else avaliacao.observacao
                         binding.imdbButton.setOnClickListener{
                             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(avaliacao.filme.link))
                             startActivity(intent)
@@ -69,6 +71,23 @@ class DetalheFilmeFragment : Fragment() {
                         Glide.with(requireContext())
                             .load(avaliacao.filme.imagemCartaz)
                             .into(binding.posterImage)
+                    }
+
+                    model.getCinemaRating(avaliacao.cinema.id) {
+                        it.onSuccess { ratings ->
+                            CoroutineScope(Dispatchers.Main).launch {
+                                for (i in ratings.indices) {
+                                    binding.cinemaRatingCat1.text = ratings[0].categoria
+                                    binding.cinemaRatingCat2.text = ratings[1].categoria
+                                    binding.cinemaRatingCat3.text = ratings[2].categoria
+                                    binding.cinemaRatingCat4.text = ratings[3].categoria
+                                    binding.cinemaRatingCat1Value.text = ratings[0].score.toString()
+                                    binding.cinemaRatingCat2Value.text = ratings[1].score.toString()
+                                    binding.cinemaRatingCat3Value.text = ratings[2].score.toString()
+                                    binding.cinemaRatingCat4Value.text = ratings[3].score.toString()
+                                }
+                            }
+                        }
                     }
                 }
             }

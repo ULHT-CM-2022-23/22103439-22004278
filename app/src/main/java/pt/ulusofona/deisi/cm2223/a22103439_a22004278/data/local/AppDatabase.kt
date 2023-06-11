@@ -5,12 +5,9 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.local.dao.DBOperations
-import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.local.tabelas.AvaliacaoDB
-import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.local.tabelas.CinemaDB
-import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.local.tabelas.FotografiaDB
-import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.local.tabelas.FilmeDB
+import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.local.tabelas.*
 
-@Database(entities = [FilmeDB::class,AvaliacaoDB::class, CinemaDB::class, FotografiaDB::class], version = 1)
+@Database(entities = [FilmeDB::class,AvaliacaoDB::class, CinemaDB::class, CinemaRatingDB::class, FotografiaDB::class], version = 1)
 abstract class AppDatabase: RoomDatabase(){
     abstract fun operations(): DBOperations
 

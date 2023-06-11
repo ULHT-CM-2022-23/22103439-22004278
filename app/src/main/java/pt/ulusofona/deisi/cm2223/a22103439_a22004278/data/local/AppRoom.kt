@@ -6,6 +6,7 @@ import kotlinx.coroutines.launch
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.local.dao.DBOperations
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.local.tabelas.AvaliacaoDB
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.local.tabelas.CinemaDB
+import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.local.tabelas.CinemaRatingDB
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.local.tabelas.FilmeDB
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.*
 import java.util.*
@@ -22,7 +23,8 @@ class AppRoom(private val storage: DBOperations): Operations() {
                 dataLancamento = filme.dataLancamento,
                 avaliacao = filme.avaliacao,
                 link = filme.link,
-                imagemCartaz = filme.imagemCartaz
+                imagemCartaz = filme.imagemCartaz,
+                idiomas = filme.idiomas
             )
             storage.insertFilme(filmeDB)
 
@@ -49,7 +51,8 @@ class AppRoom(private val storage: DBOperations): Operations() {
                     dataLancamento = it.dataLancamento,
                     avaliacao = it.avaliacao,
                     link = "https://www.imdb.com/title/" + it.id,
-                    imagemCartaz = it.imagemCartaz
+                    imagemCartaz = it.imagemCartaz,
+                   idiomas = it.idiomas
                 )
             onFinished(Result.success(filme))
         }
@@ -74,7 +77,8 @@ class AppRoom(private val storage: DBOperations): Operations() {
                 dataLancamento = filmeDB.dataLancamento,
                 avaliacao = filmeDB.avaliacao,
                 link = filmeDB.link,
-                imagemCartaz = filmeDB.imagemCartaz
+                imagemCartaz = filmeDB.imagemCartaz,
+                idiomas = filmeDB.idiomas
             )
 
             val cinemaDB = storage.getCinemaById(avaliacaoDB.idCinema)
@@ -112,7 +116,8 @@ class AppRoom(private val storage: DBOperations): Operations() {
                         dataLancamento = it.dataLancamento,
                         avaliacao = it.avaliacao,
                         link = it.link,
-                        imagemCartaz = it.imagemCartaz
+                        imagemCartaz = it.imagemCartaz,
+                        idiomas = it.idiomas
                     )
                 }
 
@@ -159,7 +164,8 @@ class AppRoom(private val storage: DBOperations): Operations() {
                     dataLancamento = filmeDB.dataLancamento,
                     avaliacao = filmeDB.avaliacao,
                     link = filmeDB.link,
-                    imagemCartaz = filmeDB.imagemCartaz
+                    imagemCartaz = filmeDB.imagemCartaz,
+                    idiomas = filmeDB.idiomas
                 )
 
                 val cinemaDB = storage.getCinemaById(it.idCinema)
@@ -217,7 +223,8 @@ class AppRoom(private val storage: DBOperations): Operations() {
                     dataLancamento = filmeDB.dataLancamento,
                     avaliacao = filmeDB.avaliacao,
                     link = filmeDB.link,
-                    imagemCartaz = filmeDB.imagemCartaz
+                    imagemCartaz = filmeDB.imagemCartaz,
+                    idiomas = filmeDB.idiomas
                 )
 
                 val cinemaDB = storage.getCinemaById(avaliacaoDB.idCinema)
@@ -265,7 +272,7 @@ class AppRoom(private val storage: DBOperations): Operations() {
         }
     }
 
-    override fun inserirCinemas(cinemas: List<Cinema>, onFinished: () -> Unit) {
+    override fun inserirCinemas(cinemas: List<Cinema>, ratings: List<CinemaRating>, onFinished: () -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
             cinemas.map {
                 CinemaDB(
@@ -279,6 +286,16 @@ class AppRoom(private val storage: DBOperations): Operations() {
             }.forEach {
                 storage.insertCinema(it)
             }
+
+            ratings.map {
+                CinemaRatingDB(
+                    idCinema = it.idCinema,
+                    categoria = it.categoria,
+                    score = it.score
+                )
+            }.forEach {
+                storage.insertCinemaRating(it)
+            }
             onFinished()
         }
     }
@@ -286,6 +303,7 @@ class AppRoom(private val storage: DBOperations): Operations() {
     override fun clearAllCinemas(onFinished: () -> Unit) {
         CoroutineScope(Dispatchers.IO).launch {
             storage.deleteAllCinemas()
+            storage.deleteAllCinemaRatings()
             onFinished()
         }
     }
@@ -321,6 +339,19 @@ class AppRoom(private val storage: DBOperations): Operations() {
                 localidade = cinemaDB.localidade
             )
             onFinished(Result.success(cinema))
+        }
+    }
+
+    override fun getCinemaRating(idCinema: Int, onFinished: (Result<List<CinemaRating>>) -> Unit) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val cinemaRatings = storage.getCinemaRatings(idCinema).map {
+                CinemaRating(
+                    idCinema = it.idCinema,
+                    categoria = it.categoria,
+                    score = it.score
+                )
+            }
+            onFinished(Result.success(cinemaRatings))
         }
     }
 

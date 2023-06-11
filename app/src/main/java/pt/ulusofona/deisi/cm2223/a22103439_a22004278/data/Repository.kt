@@ -8,10 +8,7 @@ import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.remote.ConnectivityUtil
-import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Avaliacao
-import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Cinema
-import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Filme
-import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Operations
+import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.*
 import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
@@ -44,9 +41,11 @@ class Repository private constructor(val local: Operations, private val remote: 
             }
             val jsonString = stringBuilder.toString()
 
+            val cinemas = mutableListOf<Cinema>()
+            val ratings = mutableListOf<CinemaRating>()
+
             val jsonObject = JSONObject(jsonString)
             val cinemaList = jsonObject["cinemas"] as JSONArray
-            val cinemas = mutableListOf<Cinema>()
             for(i in 0 until cinemaList.length()) { // for(int i=0; i<cinemaList.length(); i++)
                 val cinema = cinemaList[i] as JSONObject
                 cinemas.add(
@@ -59,9 +58,21 @@ class Repository private constructor(val local: Operations, private val remote: 
                         cinema["county"].toString()
                         )
                 )
+
+                val ratingsList = cinema["ratings"] as JSONArray
+                for(j in 0 until ratingsList.length()) {
+                    val rating = ratingsList[j] as JSONObject
+                    ratings.add(
+                        CinemaRating(
+                            cinema["cinema_id"].toString().toInt(),
+                            rating["category"].toString(),
+                            rating["score"].toString().toInt()
+                        )
+                    )
+                }
             }
             local.clearAllCinemas {
-                local.inserirCinemas(cinemas) {
+                local.inserirCinemas(cinemas, ratings) {
                     onFinished(Result.success(cinemas))
                 }
             }
@@ -74,7 +85,7 @@ class Repository private constructor(val local: Operations, private val remote: 
         }
     }
 
-    override fun inserirCinemas(cinemas: List<Cinema>, onFinished: () -> Unit) {
+    override fun inserirCinemas(cinemas: List<Cinema>, ratings: List<CinemaRating>, onFinished: () -> Unit) {
         throw Exception("Illegal operation")
     }
 
@@ -92,6 +103,12 @@ class Repository private constructor(val local: Operations, private val remote: 
 
     override fun getCinemaById(idCinema: Int, onFinished: (Result<Cinema>) -> Unit) {
         local.getCinemaById(idCinema) {
+            onFinished(it)
+        }
+    }
+
+    override fun getCinemaRating(idCinema: Int, onFinished: (Result<List<CinemaRating>>) -> Unit) {
+        local.getCinemaRating(idCinema) {
             onFinished(it)
         }
     }

@@ -3,10 +3,7 @@ import okhttp3.*
 import org.json.JSONObject
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.API_BASE_URL
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.API_TOKEN
-import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Avaliacao
-import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Cinema
-import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Operations
-import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Filme
+import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.*
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStream
@@ -71,7 +68,8 @@ class APIServiceWithOkHttpAndJSONObject(
                                     jsonObject.getString("Released"),
                                     jsonObject.getString("imdbRating"),
                                     "https://www.imdb.com/title/" + jsonObject.getString("imdbID"),
-                                    jsonObject.getString("Poster")
+                                    jsonObject.getString("Poster"),
+                                    jsonObject.getString("Language"),
                                 )
                                 onFinished(Result.success(filme))
                             }
@@ -90,7 +88,7 @@ class APIServiceWithOkHttpAndJSONObject(
         throw Exception("Illegal operation")
     }
 
-    override fun inserirCinemas(cinemas: List<Cinema>, onFinished: () -> Unit) {
+    override fun inserirCinemas(cinemas: List<Cinema>, ratings: List<CinemaRating>, onFinished: () -> Unit) {
         throw Exception("Illegal operation")
     }
 
@@ -103,6 +101,10 @@ class APIServiceWithOkHttpAndJSONObject(
     }
 
     override fun getCinemaById(idCinema: Int, onFinished: (Result<Cinema>) -> Unit) {
+        throw Exception("Illegal operation")
+    }
+
+    override fun getCinemaRating(idCinema: Int, onFinished: (Result<List<CinemaRating>>) -> Unit) {
         throw Exception("Illegal operation")
     }
 

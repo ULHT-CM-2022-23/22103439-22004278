@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.local.tabelas.AvaliacaoDB
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.local.tabelas.CinemaDB
+import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.local.tabelas.CinemaRatingDB
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.local.tabelas.FilmeDB
 
 @Dao
@@ -66,9 +67,18 @@ interface DBOperations {
     @Query("SELECT * FROM cinemas WHERE nome = :nome")
     fun getCinemaByNome(nome: String): CinemaDB
 
+    @Query("SELECT * FROM cinema_ratings WHERE id_cinema = :id")
+    fun getCinemaRatings(id: Int): List<CinemaRatingDB>
+
     @Insert
     fun insertCinema(cinema: CinemaDB)
 
+    @Insert
+    fun insertCinemaRating(rating: CinemaRatingDB)
+
     @Query("DELETE FROM cinemas")
     fun deleteAllCinemas()
+
+    @Query("DELETE FROM cinema_ratings")
+    fun deleteAllCinemaRatings()
 }

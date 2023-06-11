@@ -23,6 +23,7 @@ class MapFragment : Fragment() {
     private lateinit var model: Operations
 
     private lateinit var binding: FragmentMapBinding
+
     // Esta variável irá guardar uma referência para o mapa
     private var map: GoogleMap? = null
 
@@ -55,7 +56,12 @@ class MapFragment : Fragment() {
                         CoroutineScope(Dispatchers.Main).launch {
                             for (avaliacao in avaliacoes) {
                                 val markerOptions = MarkerOptions()
-                                    .position(LatLng(avaliacao.cinema.latitude, avaliacao.cinema.longitude))
+                                    .position(
+                                        LatLng(
+                                            avaliacao.cinema.latitude,
+                                            avaliacao.cinema.longitude
+                                        )
+                                    )
                                     .title(avaliacao.filme.nome)
                                     .snippet("Grau de satisfação: ${avaliacao.avalicao}")
                                     .icon(getMarkerIcon(avaliacao.avalicao))
@@ -69,14 +75,17 @@ class MapFragment : Fragment() {
 
             map.setOnMarkerClickListener { marker ->
                 // Recupere as informações do filme associadas ao marcador e navegue para a tela de detalhes
-                CoroutineScope(Dispatchers.IO).launch{
+                CoroutineScope(Dispatchers.IO).launch {
                     model.getAllAvaliacoes {
                         it.onSuccess {
                             val avaliacoes: List<Avaliacao> = it
                             CoroutineScope(Dispatchers.Main).launch {
                                 for (avaliacao in avaliacoes) {
                                     if (avaliacao.filme.nome == marker.title) {
-                                        NavigationManager.goToOperationDetailFragment(parentFragmentManager, avaliacao.id)
+                                        NavigationManager.goToOperationDetailFragment(
+                                            parentFragmentManager,
+                                            avaliacao.id
+                                        )
                                     }
                                 }
                             }
@@ -95,15 +104,14 @@ class MapFragment : Fragment() {
         binding.map.onResume()
     }
 
-}
-
-fun getMarkerIcon(grauSatisfacao: Int): BitmapDescriptor {
-    return when (grauSatisfacao) {
-        in 1..2 -> BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)
-        in 3..4 -> BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)
-        in 5..6 -> BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)
-        in 7..8 -> BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)
-        in 9..10 -> BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)
-        else -> BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)
+    fun getMarkerIcon(grauSatisfacao: Int): BitmapDescriptor {
+        return when (grauSatisfacao) {
+            in 1..2 -> BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)
+            in 3..4 -> BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)
+            in 5..6 -> BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)
+            in 7..8 -> BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)
+            in 9..10 -> BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)
+            else -> BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)
+        }
     }
 }
