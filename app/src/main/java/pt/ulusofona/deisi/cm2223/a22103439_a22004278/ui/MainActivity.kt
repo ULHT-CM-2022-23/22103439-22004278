@@ -115,7 +115,7 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    private val REQUEST_CODE_SPEECH_INPUT = 100
+    private val REQUEST_CODE_SPEECH_INPUT = 0
     private var resultVoiceSearch : String = ""
 
     @SuppressLint("MissingInflatedId")
@@ -132,6 +132,7 @@ class MainActivity : AppCompatActivity() {
 
         if(messageTextView.text.isEmpty()) {
             iniciarPesquisaPorVoz()
+            messageTextView.text = resultVoiceSearch
         }
 
         searchButton.setOnClickListener {
@@ -141,9 +142,9 @@ class MainActivity : AppCompatActivity() {
         voiceButton.setOnClickListener {
             // Ação do botão para iniciar a pesquisa de voz
             iniciarPesquisaPorVoz()
+            messageTextView.text = resultVoiceSearch
         }
 
-        messageTextView.text = resultVoiceSearch
         alertDialog.show()
     }
 
