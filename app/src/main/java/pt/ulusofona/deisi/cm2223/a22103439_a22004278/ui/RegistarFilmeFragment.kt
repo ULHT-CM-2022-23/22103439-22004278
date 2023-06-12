@@ -104,31 +104,31 @@ class RegistarFilmeFragment : Fragment() {
             var preenchido = true
 
             if (nome.isEmpty() || nome == ""){
-                binding.nameEditText.error = R.string.error_required_field.toString()
+                binding.nameEditText.error = getString(R.string.error_required_field)
                 preenchido = false
             }
 
             if (cinema.isEmpty() || cinema == ""){
-                binding.cinemaEditText.error = R.string.error_required_field.toString()
+                binding.cinemaEditText.error = getString(R.string.error_required_field)
                 preenchido = false
             }
 
             if (date == null || date.after(Date()) || date == Date()) {
-                binding.datePicker.error = R.string.error_invalid_date.toString()
+                binding.datePicker.error = getString(R.string.error_invalid_date)
                 preenchido = false
             }
 
             if (preenchido) {
 
                 showConfirmationDialog(
-                    message = "Tem a certeza que quer registar o filme ${nome}?",
+                    message = getString(R.string.save_confirmation_text, nome),
                     positiveButtonAction = {
                         CoroutineScope(Dispatchers.IO).launch {
 
                             model.getFilmeByName(nome){ itFilme ->
                                 if(itFilme.isFailure){
                                     CoroutineScope(Dispatchers.Main).launch {
-                                        binding.nameEditText.error = R.string.error_movie_doesnt_exist.toString()
+                                        binding.nameEditText.error = getString(R.string.error_movie_doesnt_exist)
                                     }
                                 } else if(itFilme.isSuccess) {
                                     itFilme.onSuccess { filme ->
@@ -136,14 +136,14 @@ class RegistarFilmeFragment : Fragment() {
                                             if(itAvaliacao.isSuccess){
                                                 itAvaliacao.onSuccess {
                                                     CoroutineScope(Dispatchers.Main).launch {
-                                                        binding.nameEditText.error = R.string.error_movie_already_used.toString()
+                                                        binding.nameEditText.error = getString(R.string.error_movie_already_used)
                                                     }
                                                 }
                                             } else if(itAvaliacao.isFailure) {
                                                 model.getCinemaByNome(cinema) { itCinema ->
                                                     if (itCinema.isFailure) {
                                                         CoroutineScope(Dispatchers.Main).launch {
-                                                            binding.cinemaEditText.error = R.string.error_cinema_doesnt_exist.toString()
+                                                            binding.cinemaEditText.error = getString(R.string.error_cinema_doesnt_exist)
                                                         }
                                                     } else if (itCinema.isSuccess) {
                                                         itCinema.onSuccess { cinema ->

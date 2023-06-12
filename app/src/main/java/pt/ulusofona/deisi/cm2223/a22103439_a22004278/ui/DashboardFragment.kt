@@ -39,7 +39,8 @@ class DashboardFragment : Fragment() {
             }
             model.getMediaAvaliacoes { media ->
                 CoroutineScope(Dispatchers.Main).launch {
-                    binding.ratingsMean.text = media.getOrDefault(0.0).toString()
+                    val mediaFormat = String.format("%.2f", media.getOrDefault(0.0))
+                    binding.ratingsMean.text = mediaFormat
                 }
             }
             model.getCountAvaliacoes { count ->

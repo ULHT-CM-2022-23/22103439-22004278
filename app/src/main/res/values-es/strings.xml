@@ -43,7 +43,7 @@
     <string name="default_images_added">0</string>
     <string name="yes">Sí</string>
     <string name="no">No</string>
-    <string name="save_confirmation_text">¿Está seguro de que desea registrar la película?</string>
+    <string name="save_confirmation_text">¿Está seguro de que desea registrar la película %1$s?</string>
     <string name="error_required_field">Este campo es obligatorio</string>
     <string name="error_movie_doesnt_exist">Esta película no existe</string>
     <string name="error_movie_already_used">La evaluación de esta película ya está registrada</string>

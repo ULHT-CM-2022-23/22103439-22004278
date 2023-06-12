@@ -65,7 +65,7 @@ class Repository private constructor(val local: Operations, private val remote: 
                     ratings.add(
                         CinemaRating(
                             cinema["cinema_id"].toString().toInt(),
-                            rating["category"].toString(),
+                            rating["category"].toString().replaceFirstChar { it.uppercase() },
                             rating["score"].toString().toInt()
                         )
                     )
