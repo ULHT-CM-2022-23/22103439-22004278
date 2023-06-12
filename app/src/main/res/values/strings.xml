@@ -69,4 +69,5 @@
     <string name="search">Pesquisar</string>
     <string name="voice_search_again">Falar novamente</string>
     <string name="voice_search_error">Erro ao iniciar a pesquisa por voz</string>
+    <string name="no_results">Este filme não foi avaliado</string>
 </resources>

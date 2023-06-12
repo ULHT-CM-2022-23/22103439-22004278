@@ -130,13 +130,28 @@ class MainActivity : AppCompatActivity() {
             .setView(view)
             .create()
 
-        if(messageTextView.text.isEmpty()) {
-            iniciarPesquisaPorVoz()
-            messageTextView.text = resultVoiceSearch
-        }
+        iniciarPesquisaPorVoz()
+        messageTextView.text = resultVoiceSearch
 
         searchButton.setOnClickListener {
-            // Ação do botão para pesquisar
+            CoroutineScope(Dispatchers.IO).launch {
+                model.getFilmeByName(resultVoiceSearch) {
+                    it.onSuccess { filme ->
+                        model.getAvaliacaoByFilme(filme.nome) {
+                            it.onSuccess { avaliacao ->
+                                CoroutineScope(Dispatchers.Main).launch {
+                                    NavigationManager.goToOperationDetailFragment(supportFragmentManager, avaliacao.id)
+                                }
+                            }
+                        }
+                    }
+                    it.onFailure {
+                        CoroutineScope(Dispatchers.Main).launch {
+                            Toast.makeText(this@MainActivity, getString(R.string.no_results), Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
         }
 
         voiceButton.setOnClickListener {
