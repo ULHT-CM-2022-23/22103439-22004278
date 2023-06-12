@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.speech.RecognizerIntent
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.TextView
@@ -116,7 +117,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val REQUEST_CODE_SPEECH_INPUT = 0
-    private var resultVoiceSearch : String = ""
 
     @SuppressLint("MissingInflatedId")
     private fun exibirAlertDialog() {
@@ -129,25 +129,27 @@ class MainActivity : AppCompatActivity() {
         val alertDialog = AlertDialog.Builder(this)
             .setView(view)
             .create()
-
-        iniciarPesquisaPorVoz()
-        messageTextView.text = resultVoiceSearch
+        alertDialog.show()
+        iniciarPesquisaPorVoz {
+            messageTextView.text = it
+        }
 
         searchButton.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-                model.getFilmeByName(resultVoiceSearch) {
+                model.getFilmeByName(messageTextView.text.toString()) {
                     it.onSuccess { filme ->
-                        model.getAvaliacaoByFilme(filme.nome) {
+                        model.getAvaliacaoByFilme(filme.id) {
                             it.onSuccess { avaliacao ->
                                 CoroutineScope(Dispatchers.Main).launch {
+                                    alertDialog.dismiss()
                                     NavigationManager.goToOperationDetailFragment(supportFragmentManager, avaliacao.id)
                                 }
                             }
-                        }
-                    }
-                    it.onFailure {
-                        CoroutineScope(Dispatchers.Main).launch {
-                            Toast.makeText(this@MainActivity, getString(R.string.no_results), Toast.LENGTH_SHORT).show()
+                            it.onFailure {
+                                CoroutineScope(Dispatchers.Main).launch {
+                                    Toast.makeText(this@MainActivity, getString(R.string.no_results), Toast.LENGTH_SHORT).show()
+                                }
+                            }
                         }
                     }
                 }
@@ -156,14 +158,29 @@ class MainActivity : AppCompatActivity() {
 
         voiceButton.setOnClickListener {
             // Ação do botão para iniciar a pesquisa de voz
-            iniciarPesquisaPorVoz()
-            messageTextView.text = resultVoiceSearch
+            iniciarPesquisaPorVoz {
+                messageTextView.text = it
+            }
         }
-
-        alertDialog.show()
     }
 
-    private fun iniciarPesquisaPorVoz() {
+    private val speechRecognitionLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK) {
+            val data: Intent? = result.data
+            if (data != null) {
+                val resultRecognizer = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+                if (!resultRecognizer.isNullOrEmpty()) {
+                    voiceRecognitionCallback.invoke(resultRecognizer[0])
+                }
+            }
+        }
+    }
+
+    private lateinit var voiceRecognitionCallback: (String) -> Unit
+
+    private fun iniciarPesquisaPorVoz(callback: (String) -> Unit) {
+        voiceRecognitionCallback = callback
+
         val permission = Manifest.permission.RECORD_AUDIO
         if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(permission), REQUEST_CODE_SPEECH_INPUT)
@@ -176,18 +193,6 @@ class MainActivity : AppCompatActivity() {
                 speechRecognitionLauncher.launch(intent)
             } catch (e: ActivityNotFoundException) {
                 Toast.makeText(this, getString(R.string.voice_search_error), Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-    private val speechRecognitionLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == RESULT_OK) {
-            val data: Intent? = result.data
-            if (data != null) {
-                val resultRecognizer = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
-                if (!resultRecognizer.isNullOrEmpty()) {
-                    resultVoiceSearch = resultRecognizer[0]
-                }
             }
         }
     }
