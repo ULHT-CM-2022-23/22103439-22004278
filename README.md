@@ -7,8 +7,9 @@ Projeto de android nativo para a cadeira de Computação Móvel do ano letivo 20
 
 - Alexandre Garcia - a22004278
 - Diogo Silva - a22103439
-Autoavaliação (parte 1): 15
-Autoavaliação (parte 2): 16
+
+- Autoavaliação (parte 1): 15
+- Autoavaliação (parte 2): 16
 
 ## Video
 https://youtu.be/XdTyTcv7FKo
