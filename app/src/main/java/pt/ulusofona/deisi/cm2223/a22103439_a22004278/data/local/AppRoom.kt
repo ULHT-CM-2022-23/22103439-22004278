@@ -4,11 +4,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.local.dao.DBOperations
-import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.local.tabelas.AvaliacaoDB
-import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.local.tabelas.CinemaDB
-import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.local.tabelas.CinemaRatingDB
-import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.local.tabelas.FilmeDB
+import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.local.tabelas.*
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.*
+import java.io.File
+import java.net.URI
 import java.util.*
 
 class AppRoom(private val storage: DBOperations): Operations() {
@@ -37,6 +36,28 @@ class AppRoom(private val storage: DBOperations): Operations() {
                 idCinema = avaliacao.cinema.id,
             )
             storage.insertAvaliacao(avaliacaoDB)
+        }
+    }
+
+    override fun inserirFotosAvaliacao(idAvaliacao: String, fotos: List<File>, onFinished: () -> Unit) {
+        CoroutineScope(Dispatchers.IO).launch {
+            fotos.forEach {
+                val avaliacaoFoto = AvaliacaoFotoDB(
+                    idAvaliacao = idAvaliacao,
+                    uriFoto = it.toURI().toString()
+                )
+                storage.insertFotoAvaliacao(avaliacaoFoto)
+            }
+            onFinished()
+        }
+    }
+
+    override fun getFotosAvaliacao(idAvaliacao: String, onFinished: (Result<List<File>>) -> Unit) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val fotos = storage.getFotosAvaliacao(idAvaliacao).map {
+                File(URI(it.uriFoto))
+            }
+            onFinished(Result.success(fotos))
         }
     }
 

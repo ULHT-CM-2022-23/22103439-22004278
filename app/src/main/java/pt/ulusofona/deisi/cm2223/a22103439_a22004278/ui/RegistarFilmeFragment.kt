@@ -50,11 +50,12 @@ class RegistarFilmeFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_registar_filme, container, false)
         binding = FragmentRegistarFilmeBinding.bind(view)
         photosClickEvent()
+        photosClearClickEvent()
         model = Repository.getInstance()
         val cinemas = mutableListOf<String>()
         CoroutineScope(Dispatchers.IO).launch {
             model.getAllCinemas {
-                if(it.isSuccess){
+                if (it.isSuccess) {
                     it.onSuccess {
                         it.forEach {
                             cinemas.add(it.nome)
@@ -64,18 +65,11 @@ class RegistarFilmeFragment : Fragment() {
             }
         }
 
-/*        val adapterFilme = ArrayAdapter<String>(
-            requireContext(),
-            android.R.layout.simple_dropdown_item_1line,
-            App.filmesIMDB.map { it.nome }
-        )*/
         val adapterCinema = ArrayAdapter(
             requireContext(),
             android.R.layout.simple_dropdown_item_1line,
             cinemas
         )
-
-        //binding.nameEditText.setAdapter(adapterFilme)
 
         binding.cinemaEditText.setAdapter(adapterCinema)
 
@@ -147,8 +141,10 @@ class RegistarFilmeFragment : Fragment() {
                                                         }
                                                     } else if (itCinema.isSuccess) {
                                                         itCinema.onSuccess { cinema ->
+                                                            val avaliacaoUID = UUID.randomUUID().toString()
+                                                            model.inserirFotosAvaliacao(avaliacaoUID, selectedImages) {}
                                                             val avaliacao = Avaliacao(
-                                                                UUID.randomUUID().toString(),
+                                                                avaliacaoUID,
                                                                 rating,
                                                                 date!!,
                                                                 binding.notesEditText.text.toString(),
@@ -269,6 +265,17 @@ class RegistarFilmeFragment : Fragment() {
         alertDialogBuilder.show()
     }
 
+    private fun photosClearClickEvent() {
+        binding.photosClearButton.setOnClickListener {
+            selectedImages.clear()
+            binding.textInserido.text = "0"
+            Toast.makeText(
+                requireContext(),
+                R.string.success_photos_cleared,
+                Toast.LENGTH_LONG
+            ).show()
+        }
+    }
 
     private fun photosClickEvent() {
         binding.photosButton.setOnClickListener {
@@ -326,14 +333,9 @@ class RegistarFilmeFragment : Fragment() {
         }
     }
 
-
     var activityResultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                // Obtenha a URI da imagem capturada usando o caminho do arquivo
-                val uri = Uri.fromFile(photoFile)
-
-                // Use a URI para exibir a imagem capturada
                 selectedImages.add(photoFile)
                 binding.textInserido.text = selectedImages.size.toString()
             }

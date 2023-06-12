@@ -10,6 +10,7 @@ import org.json.JSONObject
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.remote.ConnectivityUtil
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.*
 import java.io.BufferedReader
+import java.io.File
 import java.io.InputStream
 import java.io.InputStreamReader
 
@@ -24,6 +25,18 @@ class Repository private constructor(val local: Operations, private val remote: 
             local.inserirAvaliacao(filme, avaliacao){
                 onFinished(Result.success(filme))
             }
+        }
+    }
+
+    override fun inserirFotosAvaliacao(idAvaliacao: String, fotos: List<File>, onFinished: () -> Unit) {
+        local.inserirFotosAvaliacao(idAvaliacao, fotos) {
+            onFinished()
+        }
+    }
+
+    override fun getFotosAvaliacao(idAvaliacao: String, onFinished: (Result<List<File>>) -> Unit) {
+        local.getFotosAvaliacao(idAvaliacao) {
+            onFinished(it)
         }
     }
 

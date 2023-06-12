@@ -165,6 +165,16 @@
             android:textStyle="bold"
             android:layout_marginHorizontal="2dp"/>
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/photosClearButton"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:textColor="@color/design_default_color_error"
+            android:textSize="14sp"
+            android:text="@string/clear_photos" />
+
     </LinearLayout>
 
     <com.google.android.material.button.MaterialButton

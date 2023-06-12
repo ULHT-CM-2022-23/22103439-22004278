@@ -28,7 +28,7 @@ class FilmesTopAdapter (
     }
 
     override fun onBindViewHolder(holder: FilmesTopViewHolder, position: Int) {
-        val dateFromat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+        val dateFromat = SimpleDateFormat("yyy/MM/dd", Locale.getDefault())
 
         holder.binding.filmeTitulo.text = items[position].filme.nome
         holder.binding.filmeAvaliacao.text = items[position].avalicao.toString()

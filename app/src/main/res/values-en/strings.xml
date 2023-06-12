@@ -34,7 +34,7 @@
     <string name="default_rating">5.0</string>
     <string name="movie_image">Movie Image</string>
     <string name="star_icon">Star Icon</string>
-    <string name="extra_info">Additional Information</string>
+    <string name="extra_info">Evaluation Information</string>
     <string name="middle_dot" translatable="false">・</string>
     <string name="photos_list">Photos List</string>
     <string name="inserted_photo">Inserted Photo</string>
@@ -62,4 +62,6 @@
     <string name="languages">Languages</string>
     <string name="cinema_eval">Cinema Rating</string>
     <string name="error_internet_connection">Unable to register without internet</string>
+    <string name="clear_photos">Clear photos</string>
+    <string name="success_photos_cleared">The photos were cleared</string>
 </resources>

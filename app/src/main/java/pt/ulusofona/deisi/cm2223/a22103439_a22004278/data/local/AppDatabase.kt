@@ -7,7 +7,13 @@ import androidx.room.RoomDatabase
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.local.dao.DBOperations
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.local.tabelas.*
 
-@Database(entities = [FilmeDB::class,AvaliacaoDB::class, CinemaDB::class, CinemaRatingDB::class, FotografiaDB::class], version = 1)
+@Database(entities = [
+    FilmeDB::class,
+    AvaliacaoDB::class,
+    CinemaDB::class,
+    CinemaRatingDB::class,
+    FotografiaDB::class,
+    AvaliacaoFotoDB::class], version = 2)
 abstract class AppDatabase: RoomDatabase(){
     abstract fun operations(): DBOperations
 

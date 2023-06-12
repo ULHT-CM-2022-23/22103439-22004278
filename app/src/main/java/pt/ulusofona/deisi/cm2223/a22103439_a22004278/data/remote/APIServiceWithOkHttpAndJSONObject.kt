@@ -4,10 +4,7 @@ import org.json.JSONObject
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.API_BASE_URL
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.API_TOKEN
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.*
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStream
-import java.io.InputStreamReader
+import java.io.*
 
 class APIServiceWithOkHttpAndJSONObject(
     val baseUrl: String = API_BASE_URL,
@@ -113,6 +110,14 @@ class APIServiceWithOkHttpAndJSONObject(
     }
 
     override fun inserirAvaliacao(filme: Filme, avaliacao: Avaliacao, onFinished: (Result<Filme>) -> Unit) {
+        throw Exception("Illegal operation")
+    }
+
+    override fun inserirFotosAvaliacao(idAvaliacao: String, fotos: List<File>, onFinished: () -> Unit) {
+        throw Exception("Illegal operation")
+    }
+
+    override fun getFotosAvaliacao(idAvaliacao: String, onFinished: (Result<List<File>>) -> Unit) {
         throw Exception("Illegal operation")
     }
 

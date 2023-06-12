@@ -4,10 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.local.tabelas.AvaliacaoDB
-import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.local.tabelas.CinemaDB
-import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.local.tabelas.CinemaRatingDB
-import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.local.tabelas.FilmeDB
+import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.local.tabelas.*
 
 @Dao
 interface DBOperations {
@@ -53,6 +50,12 @@ interface DBOperations {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAllAvaliacoes(avaliacoes: List<AvaliacaoDB>)
+
+    @Insert
+    fun insertFotoAvaliacao(foto: AvaliacaoFotoDB)
+
+    @Query("SELECT * FROM avaliacao_fotos WHERE id_avaliacao = :idAvaliacao")
+    fun getFotosAvaliacao(idAvaliacao: String): List<AvaliacaoFotoDB>
 
     @Query("DELETE FROM avaliacoes")
     fun deleteAllAvaliacoes()

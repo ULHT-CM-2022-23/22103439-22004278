@@ -43,14 +43,13 @@ class DetalheFilmeFragment : Fragment() {
     @SuppressLint("SuspiciousIndentation")
     override fun onStart() {
         super.onStart()
-        val dateFromat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+        val dateFromat = SimpleDateFormat("yyy/MM/dd", Locale.getDefault())
         operationUuid?.let { uuid ->
             CoroutineScope(Dispatchers.IO).launch {
                 var avaliacao : Avaliacao
                 model.getAvaliacao(uuid) {
                     avaliacao = it.getOrNull()!!
                     CoroutineScope(Dispatchers.Main).launch {
-                        binding.rvImagens.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                         binding.movieTitle.text =  avaliacao.filme.nome
                         binding.movieGenero.text = avaliacao.filme.genero
                         binding.movieRating.text = avaliacao.avalicao.toString()
@@ -89,8 +88,23 @@ class DetalheFilmeFragment : Fragment() {
                             }
                         }
                     }
+
+                    model.getFotosAvaliacao(uuid) {
+                        it.onSuccess { fotos ->
+                            CoroutineScope(Dispatchers.Main).launch {
+                                binding.rvImagens.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                                binding.rvImagens.adapter = ImagemDetalheAdapter(fotos)
+                            }
+                        }
+                    }
                 }
             }
+
+            /*CoroutineScope(Dispatchers.IO).launch {
+                CoroutineScope(Dispatchers.Main).launch {
+                    binding.rvImagens.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                }
+            }*/
         }
     }
 

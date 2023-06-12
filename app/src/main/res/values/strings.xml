@@ -35,7 +35,7 @@
     <string name="default_rating">5.0</string>
     <string name="movie_image">Imagem do filme</string>
     <string name="star_icon">Icone de estrela</string>
-    <string name="extra_info">Informações adicionais</string>
+    <string name="extra_info">Informações da avaliação</string>
     <string name="middle_dot" translatable="false">・</string>
     <string name="photos_list">Lista de Fotografias</string>
     <string name="inserted_photo">Foto inserida</string>
@@ -64,4 +64,6 @@
     <string name="languages">Idiomas</string>
     <string name="cinema_eval">Avaliação do cinema</string>
     <string name="error_internet_connection">Não é possível registar sem internet</string>
+    <string name="clear_photos">Limpar imagens</string>
+    <string name="success_photos_cleared">As imagens foram limpas</string>
 </resources>
