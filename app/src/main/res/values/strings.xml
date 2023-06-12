@@ -66,4 +66,7 @@
     <string name="error_internet_connection">Não é possível registar sem internet</string>
     <string name="clear_photos">Limpar imagens</string>
     <string name="success_photos_cleared">As imagens foram limpas</string>
+    <string name="search">Pesquisar</string>
+    <string name="voice_search_again">Falar novamente</string>
+    <string name="voice_search_error">Erro ao iniciar a pesquisa por voz</string>
 </resources>

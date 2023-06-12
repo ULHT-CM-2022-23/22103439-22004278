@@ -1,14 +1,26 @@
 package pt.ulusofona.deisi.cm2223.a22103439_a22004278.ui
+
+import android.Manifest
+import android.annotation.SuppressLint
 import android.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
-import android.os.CountDownTimer
-import android.view.Gravity
+import android.speech.RecognizerIntent
 import android.view.MenuItem
+import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
+import com.fondesa.kpermissions.allGranted
 import com.fondesa.kpermissions.extension.permissionsBuilder
+import com.fondesa.kpermissions.extension.send
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,11 +28,8 @@ import pt.ulusofona.deisi.cm2223.a22103439_a22004278.R
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.data.Repository
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.databinding.ActivityMainBinding
 import pt.ulusofona.deisi.cm2223.a22103439_a22004278.model.Operations
+import java.util.*
 
-import android.Manifest
-import com.fondesa.kpermissions.allGranted
-import com.fondesa.kpermissions.extension.permissionsBuilder
-import com.fondesa.kpermissions.extension.send
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -106,27 +115,64 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    private val REQUEST_CODE_SPEECH_INPUT = 100
+    private var resultVoiceSearch : String = ""
+
+    @SuppressLint("MissingInflatedId")
     private fun exibirAlertDialog() {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle(R.string.voice_search)
-        builder.setMessage(R.string.dialog_message)
+        val inflater = layoutInflater
+        val view = inflater.inflate(R.layout.voice_search, null)
+        val messageTextView = view.findViewById<TextView>(R.id.voice_search_result)
+        val searchButton = view.findViewById<Button>(R.id.searchButton)
+        val voiceButton = view.findViewById<Button>(R.id.voiceButton)
 
-        val textView = TextView(this)
-        textView.gravity = Gravity.CENTER
-        textView.textSize = 24f
-        builder.setView(textView)
+        val alertDialog = AlertDialog.Builder(this)
+            .setView(view)
+            .create()
 
-        val alertDialog = builder.create()
+        if(messageTextView.text.isEmpty()) {
+            iniciarPesquisaPorVoz()
+        }
+
+        searchButton.setOnClickListener {
+            // Ação do botão para pesquisar
+        }
+
+        voiceButton.setOnClickListener {
+            // Ação do botão para iniciar a pesquisa de voz
+            iniciarPesquisaPorVoz()
+        }
+
+        messageTextView.text = resultVoiceSearch
         alertDialog.show()
+    }
 
-        // Iniciar contagem regressiva
-        object : CountDownTimer(10000, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                textView.text = "${millisUntilFinished / 1000}"
+    private fun iniciarPesquisaPorVoz() {
+        val permission = Manifest.permission.RECORD_AUDIO
+        if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(permission), REQUEST_CODE_SPEECH_INPUT)
+        } else {
+            val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault())
+
+            try {
+                speechRecognitionLauncher.launch(intent)
+            } catch (e: ActivityNotFoundException) {
+                Toast.makeText(this, getString(R.string.voice_search_error), Toast.LENGTH_SHORT).show()
             }
-            override fun onFinish() {
-                alertDialog.dismiss()
+        }
+    }
+
+    private val speechRecognitionLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK) {
+            val data: Intent? = result.data
+            if (data != null) {
+                val resultRecognizer = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)
+                if (!resultRecognizer.isNullOrEmpty()) {
+                    resultVoiceSearch = resultRecognizer[0]
+                }
             }
-        }.start()
+        }
     }
 }

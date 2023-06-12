@@ -64,4 +64,7 @@
     <string name="error_internet_connection">Unable to register without internet</string>
     <string name="clear_photos">Clear photos</string>
     <string name="success_photos_cleared">The photos were cleared</string>
+    <string name="search">Search</string>
+    <string name="voice_search_again">Speak again</string>
+    <string name="voice_search_error">Error starting voice search</string>
 </resources>
